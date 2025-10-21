@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sophie & Marcus Story</title>
+  <link rel="stylesheet" href="Icon.png">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", Arial, sans-serif;
+      line-height: 1.8;
+      background: linear-gradient(135deg, #fff9fb 0%, #ffeef4 100%);
+      color: #2c3e50;
+      overflow-x: hidden;
+    }
+
+    .story-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 80px 20px;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 40px;
+      color: #e91e63;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+      opacity: 0;
+      transform: translateY(-40px);
+      transition: all 1s ease;
+    }
+
+    p, blockquote {
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s ease;
+    }
+
+    blockquote {
+      font-style: italic;
+      color: #444;
+      padding: 20px;
+      margin: 40px 0;
+      background: #fff;
+      border-left: 5px solid #e91e63;
+      border-radius: 10px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+
+    /* Visible class (triggered by JS) */
+    .visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Top-right close button */
+    .top-close-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 1.5rem;
+      color: #e91e63;
+      background: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
+      z-index: 1000;
+      text-decoration: none;
+    }
+
+    .top-close-btn:hover {
+      background: #ffe4ec;
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    /* Bottom Close Button */
+    .close-btn {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      background: #e91e63;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+      text-decoration: none;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .close-btn:hover {
+      background: #c2185b;
+      transform: scale(1.05);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      p, blockquote {
+        font-size: 1rem;
+      }
+      .top-close-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Right Close Button -->
+  <a href="linked.html" class="top-close-btn">
+    <i class="fas fa-times"></i>
+  </a>
+
+  <div class="story-container">
+    <h1>Sophie & Marcus</h1>
+
+    <p>
+      Sophie and Marcus were matched by our algorithm despite living on different continents. 
+      Their first conversation lasted until sunrise, and they knew they had found something special.
+    </p>
+
+    <blockquote>
+      "We spent six months video chatting every day. When Marcus finally visited Paris, 
+      he proposed at the Eiffel Tower. We now split our time between Paris and New York, 
+      embracing the best of both worlds."
+    </blockquote>
+
+    <p>
+      In the beginning, it was not easy. Time zones meant that Sophie was often just waking up 
+      when Marcus was heading to bed. But instead of letting this distance divide them, 
+      they found joy in the routine — Sophie would sip her morning coffee while Marcus 
+      enjoyed a late-night snack, and together they created moments that felt timeless.
+    </p>
+
+    <p>
+      Their conversations quickly grew deeper. They spoke of childhood memories, 
+      dreams for the future, and the challenges they had overcome. By the third week, 
+      they both admitted they were waiting all day just to hear the other’s voice. 
+      What began as curiosity had blossomed into something they couldn’t ignore.
+    </p>
+
+    <blockquote>
+      "It felt like we had known each other forever, even though we had never met in person," 
+      Sophie recalls. "Marcus had a way of making the distance disappear."
+    </blockquote>
+
+    <p>
+      After months of long-distance connection, Marcus booked his first flight to Paris. 
+      Sophie waited nervously at Charles de Gaulle Airport, her heart racing as the arrivals 
+      board flashed his flight as “Landed.” When their eyes finally met, it was as if the world 
+      stood still. The hug that followed erased every mile that had ever separated them.
+    </p>
+
+    <p>
+      They spent that week walking the romantic streets of Paris, 
+      laughing in small cafés, and sharing their favorite spots in the city. 
+      But the most unforgettable moment came one evening at the Eiffel Tower, 
+      where Marcus got down on one knee and asked Sophie to be his forever. 
+      Tears filled her eyes as she said yes, surrounded by glittering lights.
+    </p>
+
+    <blockquote>
+      "That night at the Eiffel Tower was everything I had ever dreamed of," 
+      Sophie says. "It wasn’t just about the proposal — it was about every call, 
+      every laugh, and every moment that led us there."
+    </blockquote>
+
+    <p>
+      Today, Sophie and Marcus split their time between Paris and New York. 
+      They’ve built a life that blends their worlds together — mornings at a Parisian bakery, 
+      evenings in Central Park, and adventures that take them across oceans. 
+      Their story is a testament that love knows no borders, and that sometimes, 
+      the person you’re meant to be with is waiting just a click away.
+    </p>
+
+    <a href="Linked.html" class="close-btn">Close Story</a>
+  </div>
+
+  <script>
+    // Intersection Observer for scroll animations
+    document.addEventListener("DOMContentLoaded", () => {
+      const elements = document.querySelectorAll("h1, p, blockquote, .close-btn");
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target); // animate only once
+          }
+        });
+      }, { threshold: 0.2 });
+
+      elements.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>

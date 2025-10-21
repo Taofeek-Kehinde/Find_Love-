@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm New Password - Find Love</title>
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff4b8b;
+            --secondary: #ff87ab;
+            --dark: #3a0c3f;
+            --light: #fff9fb;
+            --accent: #a83279;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --gray: #f0f0f0;
+            --text: #333333;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff9fb 0%, #ffeef4 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .confirm-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confirm-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .confirm-header h1 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .confirm-header p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-field input {
+            width: 100%;
+            padding: 15px 50px 15px 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .password-field input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 75, 139, 0.1);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            font-size: 18px;
+            transition: color 0.3s;
+            user-select: none;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .password-toggle.active {
+            color: var(--primary);
+        }
+
+        .password-strength {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .strength-weak { color: #dc3545; }
+        .strength-medium { color: #ffc107; }
+        .strength-strong { color: #28a745; }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 75, 139, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .back-link {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-link a:hover {
+            color: var(--accent);
+        }
+
+        /* Custom Alert Modal */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .custom-alert-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-alert-overlay.show .custom-alert {
+            transform: scale(1);
+        }
+
+        .custom-alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .custom-alert-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease;
+        }
+
+        .custom-alert-icon.success { color: #28a745; }
+        .custom-alert-icon.error { color: #dc3545; }
+        .custom-alert-icon.warning { color: #ffc107; }
+        .custom-alert-icon.info { color: #17a2b8; }
+
+        .custom-alert-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .custom-alert-message {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .custom-alert-button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .custom-alert-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.3);
+        }
+
+        /* Animations */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .confirm-container {
+                padding: 30px 25px;
+                margin: 10px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .confirm-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .confirm-header p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .confirm-container {
+                padding: 25px 20px;
+            }
+            
+            .password-field input {
+                padding: 12px 45px 12px 12px;
+            }
+            
+            .submit-btn {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="confirm-container">
+        <div class="logo">
+            <i class="fas fa-heart"></i>
+            Find Love
+        </div>
+        
+        <div class="confirm-header">
+            <h1>Set New Password</h1>
+            <p>Enter your new password below. Make sure it's strong and secure.</p>
+        </div>
+        
+        <form id="confirmForm">
+            <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <div class="password-field">
+                    <input type="password" id="newPassword" name="newPassword" placeholder="Enter your new password" required>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('newPassword')"></i>
+                </div>
+                <div class="password-strength" id="passwordStrength"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm New Password</label>
+                <div class="password-field">
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your new password" required>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('confirmPassword')"></i>
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="confirmBtn">
+                <i class="fas fa-lock"></i> Update Password
+            </button>
+        </form>
+        
+        <div class="back-link">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Get code from localStorage
+        const resetCode = localStorage.getItem('resetCode');
+
+        if (!resetCode) {
+            showCustomAlert(
+                'Invalid Access',
+                'Please verify your code first before setting a new password.',
+                'error'
+            );
+            setTimeout(() => {
+                window.location.href = 'verify.html';
+            }, 2000);
+        }
+
+        // Password toggle function
+        function togglePassword(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const toggleIcon = passwordField.nextElementSibling;
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+                toggleIcon.classList.add('active');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+                toggleIcon.classList.remove('active');
+            }
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            const strengthDiv = document.getElementById('passwordStrength');
+            let strength = 0;
+            let feedback = '';
+
+            if (password.length >= 8) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            switch (strength) {
+                case 0:
+                case 1:
+                case 2:
+                    strengthDiv.className = 'password-strength strength-weak';
+                    feedback = '⚠️ Weak password';
+                    break;
+                case 3:
+                case 4:
+                    strengthDiv.className = 'password-strength strength-medium';
+                    feedback = '🔶 Medium strength';
+                    break;
+                case 5:
+                    strengthDiv.className = 'password-strength strength-strong';
+                    feedback = '✅ Strong password';
+                    break;
+            }
+
+            strengthDiv.textContent = feedback;
+            return strength >= 3;
+        }
+
+        // Real-time password strength checking
+        document.getElementById('newPassword').addEventListener('input', function() {
+            checkPasswordStrength(this.value);
+        });
+
+        // Custom Alert System
+        function showCustomAlert(title, message, type = 'info', callback = null) {
+            const existingAlert = document.querySelector('.custom-alert-overlay');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-alert-overlay';
+
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-times-circle"></i>';
+                    break;
+                case 'warning':
+                    icon = '<i class="fas fa-exclamation-triangle"></i>';
+                    break;
+                case 'info':
+                default:
+                    icon = '<i class="fas fa-info-circle"></i>';
+                    break;
+            }
+
+            overlay.innerHTML = `
+                <div class="custom-alert">
+                    <div class="custom-alert-icon ${type}">
+                        ${icon}
+                    </div>
+                    <div class="custom-alert-title">${title}</div>
+                    <div class="custom-alert-message">${message}</div>
+                    <button class="custom-alert-button" onclick="closeCustomAlert()">
+                        ${type === 'error' ? 'Try Again' : 'OK'}
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                overlay.classList.add('show');
+            }, 10);
+
+            if (callback) {
+                overlay.setAttribute('data-callback', callback.toString());
+            }
+        }
+
+        function closeCustomAlert() {
+            const overlay = document.querySelector('.custom-alert-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
+            }
+        }
+
+        // Form submission
+        document.getElementById('confirmForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmBtn = document.getElementById('confirmBtn');
+            
+            if (!newPassword || !confirmPassword) {
+                showCustomAlert(
+                    'Missing Information', 
+                    'Please fill in both password fields.', 
+                    'warning'
+                );
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showCustomAlert(
+                    'Password Mismatch', 
+                    'Your passwords do not match. Please make sure both fields contain the same password.', 
+                    'error'
+                );
+                return;
+            }
+
+            if (!checkPasswordStrength(newPassword)) {
+                showCustomAlert(
+                    'Weak Password', 
+                    'Please choose a stronger password with at least 8 characters, including uppercase, lowercase, and numbers.', 
+                    'warning'
+                );
+                return;
+            }
+
+            // Show loading
+            confirmBtn.disabled = true;
+            confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+
+            try {
+                const response = await fetch('http://localhost:3001/api/update-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        code: resetCode,
+                        newPassword: newPassword
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Clear the stored code
+                    localStorage.removeItem('resetCode');
+
+                    showCustomAlert(
+                        'Password Updated Successfully!',
+                        `Your password has been updated in the database. You can now login with:<br><br><strong>Email:</strong> ${result.email || 'your email'}<br><strong>New Password:</strong> Your new password<br><br>You will be redirected to the login page in 3 seconds.`,
+                        'success'
+                    );
+
+                    // Redirect to login after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                } else {
+                    showCustomAlert(
+                        'Update Failed', 
+                        result.message || 'Unable to update your password. Please try again.', 
+                        'error'
+                    );
+                }
+            } catch (error) {
+                console.error('Confirm error:', error);
+                showCustomAlert(
+                    'Connection Error', 
+                    'Unable to connect to the server. Please check your connection and try again.', 
+                    'error'
+                );
+            } finally {
+                // Hide loading
+                confirmBtn.disabled = false;
+                confirmBtn.innerHTML = '<i class="fas fa-lock"></i> Update Password';
+            }
+        });
+    </script>
+</body>
+</html>

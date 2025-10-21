@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindLove - Chat</title>
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="chat.css">
+     <style>
+         @keyframes pulse {
+             0% { opacity: 1; }
+             50% { opacity: 0.5; }
+             100% { opacity: 1; }
+         }
+
+         /* Custom Alert Modal */
+         .custom-alert-overlay {
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background: rgba(0, 0, 0, 0.5);
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             z-index: 10000;
+             opacity: 0;
+             visibility: hidden;
+             transition: all 0.3s ease;
+         }
+
+         .custom-alert-overlay.show {
+             opacity: 1;
+             visibility: visible;
+         }
+
+         .custom-alert {
+             background: white;
+             border-radius: 15px;
+             padding: 30px;
+             max-width: 400px;
+             width: 90%;
+             text-align: center;
+             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+             transform: scale(0.7);
+             transition: transform 0.3s ease;
+             position: relative;
+             overflow: hidden;
+         }
+
+         .custom-alert-overlay.show .custom-alert {
+             transform: scale(1);
+         }
+
+         .custom-alert::before {
+             content: '';
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 4px;
+             background: linear-gradient(to right, #ff4b8b, #ff87ab);
+         }
+
+         .custom-alert-icon {
+             font-size: 3rem;
+             margin-bottom: 20px;
+             animation: bounce 0.6s ease;
+         }
+
+         .custom-alert-icon.success { color: #28a745; }
+         .custom-alert-icon.error { color: #dc3545; }
+         .custom-alert-icon.warning { color: #ffc107; }
+         .custom-alert-icon.info { color: #17a2b8; }
+
+         .custom-alert-title {
+             font-size: 1.5rem;
+             font-weight: 600;
+             margin-bottom: 15px;
+             color: #3a0c3f;
+         }
+
+         .custom-alert-message {
+             font-size: 1rem;
+             color: #666;
+             line-height: 1.5;
+             margin-bottom: 25px;
+         }
+
+         .custom-alert-button {
+             background: linear-gradient(to right, #ff4b8b, #ff87ab);
+             color: white;
+             border: none;
+             padding: 12px 30px;
+             border-radius: 25px;
+             font-size: 1rem;
+             font-weight: 600;
+             cursor: pointer;
+             transition: all 0.3s ease;
+             min-width: 100px;
+         }
+
+         .custom-alert-button:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 5px 15px rgba(255, 75, 139, 0.3);
+         }
+
+         /* Animations */
+         @keyframes bounce {
+             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+             40% { transform: translateY(-10px); }
+             60% { transform: translateY(-5px); }
+         }
+     </style>
+</head>
+<body>
+    <!-- Mobile sidebar overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    
+    <div style="display:flex;height:100vh;overflow:hidden;">
+        <!-- Sidebar: Chat List -->
+        <aside id="chatSidebar" style="width:300px;max-width:100vw;background:#fff;box-shadow:2px 0 10px #eee;padding:0;overflow:hidden;display:flex;flex-direction:column;height:100vh;min-height:0;">
+            <div style="padding:20px 20px 10px 20px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;">
+                <h2 style="font-size:1.3rem;color:#ff4b8b;margin:0;">Messages</h2>
+                <button class="close-sidebar-btn mobile-only" onclick="closeSidebar()" style="background:none;border:none;color:#ff4b8b;font-size:1.2rem;cursor:pointer;padding:4px;"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="chatList" style="flex:1;min-height:0;overflow-y:auto;"></div>
+        </aside>
+        <div style="flex:1;display:flex;flex-direction:column;min-width:0;min-height:0;">
+            <!-- Chat Header -->
+            <header class="chat-header">
+                <div class="chat-user-info">
+                    <button class="back-btn" onclick="toggleSidebar()" style="margin-right: 8px;" id="menuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <button class="close-btn desktop-only" onclick="goBack()" style="margin-right: 8px;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <!-- Mobile close button under hamburger -->
+                    <button class="mobile-close-under-hamburger" onclick="goBack()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <span id="chatAvatar"></span>
+                    <div class="chat-user-details">
+                        <h3 id="chatUserName">Loading...</h3>
+                        <div class="chat-user-status" id="chatUserStatus">Online</div>
+                        <!-- ADDED: Display age and location if available -->
+                        <div class="chat-user-details-extra" id="chatUserDetailsExtra" style="font-size:0.8rem;color:#888;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;"></div>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <div style="position:relative;display:inline-block;" class="desktop-only">
+                        <i class="fas fa-bell action-icon" id="notificationBell" onclick="toggleNotificationDropdown()" title="Notifications"></i>
+                        <span id="notificationBadge" style="position:absolute;top:-6px;right:-6px;background:#ff4b8b;color:white;border-radius:50%;font-size:0.8rem;padding:2px 6px;display:none;">0</span>
+                        <div id="notificationDropdown" style="display:none;position:absolute;right:0;top:30px;background:white;box-shadow:0 2px 8px rgba(0,0,0,0.15);border-radius:8px;min-width:220px;z-index:2000;">
+                            <div id="notificationList" style="max-height:260px;overflow-y:auto;"></div>
+                    <div id="friendRequestsPanel" style="display:none;max-height:260px;overflow-y:auto;border-top:1px solid #f0f0f0;"></div>
+                        </div>
+                    </div>
+                    <!-- <div style="position:relative;display:inline-block;" class="desktop-only">
+                        <button id="friendBtn" class="action-btn" onclick="toggleFriendRequest()" style="padding: 8px 12px; font-size: 0.9rem; border-radius: 20px; border: none; cursor: pointer; background: var(--primary); color: white; display: flex; align-items: center; gap: 5px;">
+                            <i class="fas fa-user-plus"></i> Add Friend
+                        </button>
+                    </div> -->
+                    <!-- <div style="position:relative;display:inline-block;" class="desktop-only">
+                        <i class="fas fa-phone action-icon" onclick="startVoiceCall()" title="Voice Call"></i>
+                    </div> -->
+                    <!-- <div style="position:relative;display:inline-block;" class="desktop-only">
+                        <i class="fas fa-video action-icon" onclick="startVideoCall()" title="Video Call"></i>
+                    </div> -->
+                    <div style="position:relative;display:inline-block;">
+                        <i class="fas fa-ellipsis-v action-icon" onclick="showChatMenu()" title="More"></i>
+                        <div id="chatMenuDropdown" style="display:none;position:absolute;right:0;top:30px;background:white;box-shadow:0 2px 8px rgba(0,0,0,0.15);border-radius:8px;padding:10px;z-index:2000;">
+                            <div style="display:flex;gap:15px;">
+                                <!-- <div style="position:relative;display:inline-block;">
+                                    <i class="fas fa-bell action-icon" onclick="toggleNotificationDropdown(); hideChatMenu();" title="Notifications"></i>
+                                    <span id="notificationBadgeMenu" style="position:absolute;top:-6px;right:-6px;background:#ff4b8b;color:white;border-radius:50%;font-size:0.8rem;padding:2px 6px;display:none;">0</span>
+                                </div> -->
+                                <!-- <button id="friendBtnMenu" class="action-btn" onclick="toggleFriendRequest(); hideChatMenu();" style="padding: 8px 12px; font-size: 0.9rem; border-radius: 20px; border: none; cursor: pointer; background: var(--primary); color: white; display: flex; align-items: center; gap: 5px;">
+                                    <i class="fas fa-user-plus"></i> Add Friend
+                                </button> -->
+                                <i class="fas fa-phone action-icon" onclick="startVoiceCall(); hideChatMenu();" title="Voice Call" style="cursor:pointer;"></i>
+                                <i class="fas fa-video action-icon" onclick="startVideoCall(); hideChatMenu();" title="Video Call" style="cursor:pointer;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Chat Container -->
+            <div class="chat-container">
+                <!-- Messages Area -->
+                <div class="messages-area" id="messagesArea"></div>
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator" style="display:none;">
+                    <span id="typingUser">User</span> is typing<span class="typing-dots">...</span>
+                </div>
+
+                <!-- Message Input Area -->
+                <div class="message-input-area">
+                    <button class="attachment-btn" onclick="showAttachmentOptions()">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <button class="attachment-btn" onclick="toggleEmojiPicker()">
+                        <i class="fas fa-smile"></i>
+                    </button>
+                    <input type="text" class="message-input" id="messageInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)" oninput="handleTyping()">
+                    <button class="attachment-btn" id="voiceBtn" onclick="toggleVoiceRecording()" title="Voice Message">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Emoji Picker -->
+    <div class="emoji-picker" id="emojiPicker"></div>
+    <!-- File Input (hidden) -->
+    <input type="file" id="fileInput" style="display:none;" accept="image/*,video/*,audio/*,application/*">
+    <!-- Video Call Modal -->
+    <div id="videoCallModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:10000;">
+        <div style="position:absolute;top:10px;right:10px;">
+            <button onclick="endVideoCall()" style="background:#f44336;color:white;border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;">&times;</button>
+        </div>
+        <div style="display:flex;height:100%;align-items:center;justify-content:center;">
+            <video id="localVideo" autoplay muted style="width:45%;border:2px solid #fff;"></video>
+            <video id="remoteVideo" autoplay style="width:45%;border:2px solid #fff;margin-left:10px;"></video>
+        </div>
+        <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);">
+            <button onclick="toggleVideo()" id="videoBtn" style="background:#4CAF50;color:white;border:none;border-radius:50%;width:50px;height:50px;font-size:18px;margin:0 10px;cursor:pointer;"><i class="fas fa-video"></i></button>
+            <button onclick="toggleAudio()" id="audioBtn" style="background:#4CAF50;color:white;border:none;border-radius:50%;width:50px;height:50px;font-size:18px;margin:0 10px;cursor:pointer;"><i class="fas fa-microphone"></i></button>
+            <button onclick="endVideoCall()" style="background:#f44336;color:white;border:none;border-radius:50%;width:50px;height:50px;font-size:18px;margin:0 10px;cursor:pointer;"><i class="fas fa-phone-slash"></i></button>
+        </div>
+    </div>
+    <!-- Socket.IO client -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // --- Chat App Logic ---
+        let currentUser = null;
+        let chatUser = null;
+        let chatUserId = null;
+        let messages = [];
+        let socket = null;
+        let chatUsers = [];
+        let notifications = [];
+        let unreadMessageCount = 0;
+
+        function getCurrentUserId() {
+            return currentUser?.id || currentUser?._id || currentUser?.email;
+        }
+
+        // FIXED: Enhanced user data extraction
+        function getUserDisplayName(user) {
+            return user?.fullName || user?.name || user?.username || user?.email || 'User';
+        }
+
+        function getUserLocation(user) {
+            return user?.location || user?.address || '';
+        }
+
+        function getUserAge(user) {
+            return user?.age || user?.dateOfBirth ? calculateAge(user.dateOfBirth) : '';
+        }
+
+        function calculateAge(birthDate) {
+            if (!birthDate) return 'N/A';
+            const today = new Date();
+            const birthDateObj = new Date(birthDate);
+            if (isNaN(birthDateObj.getTime())) return 'N/A';
+            let age = today.getFullYear() - birthDateObj.getFullYear();
+            const monthDiff = today.getMonth() - birthDateObj.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDateObj.getDate())) {
+                age--;
+            }
+            return age > 0 ? age : 'N/A';
+        }
+
+        async function fetchCurrentUserProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const userId = user?.id || user?._id || user?.email;
+                if (!userId) return;
+
+                const response = await fetch(`http://localhost:3001/api/user/${userId}?requestingUserId=${userId}`);
+                if (!response.ok) {
+                    console.warn('Failed to fetch current user profile:', response.status);
+                    return;
+                }
+                const data = await response.json();
+                if (data.success && data.user) {
+                    const updatedUser = { ...user, ...data.user };
+                    localStorage.setItem('user', JSON.stringify(updatedUser));
+                    // Update UI if current chat user is the same as current user
+                    if (!chatUserId) {
+                        chatUser = updatedUser;
+                        updateCurrentUserUI(updatedUser);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching current user profile:', error);
+            }
+        }
+
+        function updateCurrentUserUI(user) {
+            const displayName = getUserDisplayName(user);
+            document.getElementById('chatUserName').textContent = displayName;
+
+            const chatAvatar = document.getElementById('chatAvatar');
+            if (user.profilePic) {
+                chatAvatar.innerHTML = `<img src="${user.profilePic}" alt="${displayName}" class="chat-avatar">`;
+            } else {
+                chatAvatar.innerHTML = '<i class="fas fa-user" style="font-size:2rem;color:#ccc;"></i>';
+            }
+
+            const detailsExtra = document.getElementById('chatUserDetailsExtra');
+            const age = getUserAge(user);
+            const location = getUserLocation(user);
+            let detailsText = '';
+            if (age && age !== 'N/A') detailsText += `${age} years`;
+            if (age && age !== 'N/A' && location) detailsText += ' • ';
+            if (location) detailsText += location;
+            detailsExtra.textContent = detailsText;
+
+            const statusEl = document.getElementById('chatUserStatus');
+            statusEl.textContent = 'Online';
+            statusEl.style.color = '#4CAF50';
+        }
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            loadNotifications();
+            updateNotificationUI();
+            checkAuth();
+            getChatUserId();
+            await fetchCurrentUserProfile();
+            loadChatUsers();
+            loadChatUser();
+            loadMessages();
+            initializeEmojiPicker();
+            connectSocket();
+        });
+
+        async function loadChatUsers() {
+            try {
+                const userId = getCurrentUserId();
+                if (!userId) {
+                    console.log('❌ No user ID found for loading chat users');
+                    return;
+                }
+
+                console.log(' Loading chat users for:', userId);
+                const response = await fetch(`http://localhost:3001/api/chat-users/${userId}`);
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log(' Chat users response:', data);
+
+                if (data.success) {
+                    chatUsers = data.users || [];
+                    renderChatList();
+                } else {
+                    throw new Error(data.message || 'Failed to load chat users');
+                }
+            } catch (e) {
+                console.error(' Error loading chat users:', e);
+                document.getElementById('chatList').innerHTML = `
+                    <div style="padding:20px;color:#ff4b8b;text-align:center;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:2rem;margin-bottom:10px;"></i><br>
+                        Unable to load chat list<br>
+                        <small style="color:#999;">${e.message}</small><br>
+                        <button onclick="loadChatUsers()" style="margin-top:10px;padding:5px 15px;background:#ff4b8b;color:white;border:none;border-radius:5px;cursor:pointer;">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadChatUser() {
+            // Only load chat user if we have a valid chatUserId
+            if (!chatUserId) {
+                // Show current user's info when no chat user is selected
+                showCurrentUserInfo();
+                return;
+            }
+
+            try {
+                const currentUserId = getCurrentUserId();
+                const response = await fetch(`http://localhost:3001/api/user/${chatUserId}?requestingUserId=${currentUserId}`);
+                const data = await response.json();
+                if (data.success && data.user) {
+                    chatUser = data.user;
+
+                    // FIXED: Use enhanced display name function
+                    const displayName = getUserDisplayName(chatUser);
+                    document.getElementById('chatUserName').textContent = displayName;
+
+                    const chatAvatar = document.getElementById('chatAvatar');
+                    if (chatUser.profilePic) {
+                        chatAvatar.innerHTML = `<img src="${chatUser.profilePic}" alt="${displayName}" class="chat-avatar">`;
+                    } else {
+                        chatAvatar.innerHTML = '<i class="fas fa-user" style="font-size:2rem;color:#ccc;"></i>';
+                    }
+
+                    // FIXED: Show additional user details (age and location)
+                    const detailsExtra = document.getElementById('chatUserDetailsExtra');
+                    const age = getUserAge(chatUser);
+                    const location = getUserLocation(chatUser);
+                    let detailsText = '';
+                    if (age && age !== 'N/A') detailsText += `${age} years`;
+                    if (age && age !== 'N/A' && location) detailsText += ' • ';
+                    if (location) detailsText += location;
+                    detailsExtra.textContent = detailsText;
+
+                    // Show online/last seen
+                    updateChatUserStatus(chatUser.isOnline, chatUser.lastSeen);
+
+                    // Update friend button state
+                    updateFriendButtonState(chatUserId);
+                } else {
+                    document.getElementById('chatUserName').textContent = 'User not found';
+                    document.getElementById('chatAvatar').innerHTML = '<i class="fas fa-user-slash" style="font-size:2rem;color:#ccc;"></i>';
+                    document.getElementById('chatUserStatus').textContent = '';
+                    document.getElementById('chatUserDetailsExtra').textContent = '';
+                }
+            } catch (error) {
+                document.getElementById('chatUserName').textContent = 'User not found';
+                document.getElementById('chatAvatar').innerHTML = '<i class="fas fa-user-slash" style="font-size:2rem;color:#ccc;"></i>';
+                document.getElementById('chatUserStatus').textContent = '';
+                document.getElementById('chatUserDetailsExtra').textContent = '';
+            }
+        }
+
+        function showCurrentUserInfo() {
+            // Show current user's information when no chat user is selected
+            if (!currentUser) return;
+
+            const displayName = getUserDisplayName(currentUser);
+            document.getElementById('chatUserName').textContent = displayName;
+
+            const chatAvatar = document.getElementById('chatAvatar');
+            if (currentUser.profilePic) {
+                chatAvatar.innerHTML = `<img src="${currentUser.profilePic}" alt="${displayName}" class="chat-avatar">`;
+            } else {
+                chatAvatar.innerHTML = '<i class="fas fa-user" style="font-size:2rem;color:#ccc;"></i>';
+            }
+
+            // Show additional user details (age and location)
+            const detailsExtra = document.getElementById('chatUserDetailsExtra');
+            const age = getUserAge(currentUser);
+            const location = getUserLocation(currentUser);
+            let detailsText = '';
+            if (age && age !== 'N/A') detailsText += `${age} years`;
+            if (age && age !== 'N/A' && location) detailsText += ' • ';
+            if (location) detailsText += location;
+            detailsExtra.textContent = detailsText;
+
+            // Show online status
+            const statusEl = document.getElementById('chatUserStatus');
+            statusEl.textContent = 'Online';
+            statusEl.style.color = '#4CAF50';
+
+            // Hide friend button when showing current user
+            document.getElementById('friendBtn').style.display = 'none';
+        }
+
+        function renderChatList() {
+            const chatList = document.getElementById('chatList');
+            if (!chatUsers || chatUsers.length === 0) {
+                chatList.innerHTML = '<div style="padding:20px;color:#999;">No chats yet.</div>';
+                return;
+            }
+
+            const currentUserId = getCurrentUserId();
+
+            // FIXED: Use enhanced display functions for chat list, filter out current user
+            chatList.innerHTML = chatUsers.filter(user => (user._id || user.id || user.email) !== currentUserId).map(user => {
+                const displayName = getUserDisplayName(user);
+                const location = getUserLocation(user);
+                const userId = user._id || user.id || user.email;
+
+                // FIXED: Show online status for friends in chat list
+                let statusText = '';
+                let statusColor = '#888';
+                if (user.isOnline) {
+                    statusText = 'Online';
+                    statusColor = '#4CAF50';
+                } else if (user.lastSeen) {
+                    const d = new Date(user.lastSeen);
+                    const now = new Date();
+                    const diffMs = now - d;
+                    const diffMins = Math.floor(diffMs / 60000);
+                    const diffHours = Math.floor(diffMins / 60);
+                    const diffDays = Math.floor(diffHours / 24);
+
+                    if (diffMins < 1) {
+                        statusText = 'Just now';
+                    } else if (diffMins < 60) {
+                        statusText = `${diffMins}m ago`;
+                    } else if (diffHours < 24) {
+                        statusText = `${diffHours}h ago`;
+                    } else if (diffDays < 7) {
+                        statusText = `${diffDays}d ago`;
+                    } else {
+                        statusText = d.toLocaleDateString();
+                    }
+                }
+
+                return `
+                <div class="chat-list-item" onclick="openChatWith('${userId}')" style="display:flex;align-items:center;gap:15px;padding:15px 20px;cursor:pointer;border-bottom:1px solid #f0f0f0;transition:background 0.2s;${(userId==chatUserId)?'background:#f9f9f9;':''}">
+                    <div style="position:relative;">
+                        <img src="${user.profilePic || 'Icon.png'}" alt="${displayName}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #ff4b8b;">
+                        ${user.isOnline ? '<div style="position:absolute;bottom:2px;right:2px;width:12px;height:12px;background:#4CAF50;border:2px solid white;border-radius:50%;"></div>' : ''}
+                    </div>
+                    <div style="flex:1;">
+                        <div style="font-weight:600;color:#222;font-size:1rem;">${displayName}</div>
+                        <div style="font-size:0.9rem;color:#888;">${location || ''}</div>
+                        ${statusText ? `<div style="font-size:0.8rem;color:${statusColor};">${statusText}</div>` : ''}
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        function openChatWith(userId) {
+            if (userId === chatUserId) return;
+            localStorage.setItem('lastChatUserId', userId);
+            window.location.href = `chat.html?userId=${userId}`;
+        }
+
+        function checkAuth() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            currentUser = JSON.parse(user);
+            console.log(' Current user:', currentUser);
+        }
+
+        function getChatUserId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            chatUserId = urlParams.get('userId');
+            if (!chatUserId) {
+                const messagesAreaEl = document.getElementById('messagesArea');
+                if (messagesAreaEl) messagesAreaEl.innerHTML = '<div style="color:#999;text-align:center;margin-top:40px;font-size:1.1rem;">Select a conversation to start chatting.</div>';
+
+                const messageInputEl = document.getElementById('messageInput');
+                if (messageInputEl) messageInputEl.disabled = true;
+
+                const sendBtnEl = document.getElementById('sendBtn');
+                if (sendBtnEl) sendBtnEl.disabled = true;
+
+                const friendBtnEl = document.getElementById('friendBtn');
+                if (friendBtnEl) friendBtnEl.style.display = 'none';
+
+                return;
+            } else {
+                // Save to localStorage
+                localStorage.setItem('lastChatUserId', chatUserId);
+                const messageInputEl = document.getElementById('messageInput');
+                if (messageInputEl) messageInputEl.disabled = false;
+
+                const sendBtnEl = document.getElementById('sendBtn');
+                if (sendBtnEl) sendBtnEl.disabled = false;
+
+                const friendBtnEl = document.getElementById('friendBtn');
+                if (friendBtnEl) friendBtnEl.style.display = 'inline-block';
+            }
+        }
+
+        async function loadMessages() {
+            const userId = getCurrentUserId();
+            if (!currentUser || !userId || !chatUserId) return;
+            try {
+                const response = await fetch(`http://localhost:3001/api/messages/${userId}/${chatUserId}`);
+                const data = await response.json();
+                if (data.success) {
+                    messages = data.messages;
+                    displayMessages();
+                    // Allow chatting even if not friends
+                } else {
+                    showErrorMessage('Failed to load messages: ' + (data.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error loading messages:', error);
+                showErrorMessage('Unable to load messages. Please check if the server is running.');
+            }
+        }
+
+        function displayMessages() {
+            const messagesArea = document.getElementById('messagesArea');
+            messagesArea.innerHTML = '';
+            messages.forEach(message => {
+                addMessageToUI(message);
+            });
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+            markMessagesAsRead();
+        }
+
+
+
+
+
+        async function markMessagesAsRead() {
+            try {
+                const userId = getCurrentUserId();
+                if (!userId || !chatUserId) return;
+                await fetch('http://localhost:3001/api/mark-messages-read', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ senderId: chatUserId, receiverId: userId })
+                });
+            } catch (error) {
+                console.error('Error marking messages as read:', error);
+            }
+        }
+
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const content = messageInput.value.trim();
+            if (!content) return;
+            const userId = getCurrentUserId();
+            if (!currentUser || !userId || !chatUserId) return;
+            messageInput.value = '';
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = true;
+            socket.emit('send-message', {
+                senderId: userId,
+                receiverId: chatUserId,
+                content: content,
+                type: 'text'
+            });
+            // Re-enable send button after sending
+            setTimeout(() => {
+                sendBtn.disabled = false;
+            }, 500);
+        }
+
+        function addMessageToUI(message) {
+            // Only create notification for messages received from other users (not sent by current user)
+            if (message.senderId === chatUserId && message.receiverId === getCurrentUserId()) {
+                // Create notification for incoming message
+                const senderName = getUserDisplayName(chatUser) || findUserName(message.senderId) || 'User';
+                notifications.unshift({
+                    type: 'message',
+                    content: `New message from ${senderName}`,
+                    timestamp: new Date(),
+                    userId: message.senderId,
+                    messageId: message._id
+                });
+                
+                // Keep only recent notifications
+                if (notifications.length > 20) notifications.length = 20;
+                updateNotificationUI();
+                
+                // Show browser notification if permission granted
+                showBrowserNotification(`New message from ${senderName}`, message.content);
+            }
+            const messagesArea = document.getElementById('messagesArea');
+            const userId = getCurrentUserId();
+            let existingDiv = null;
+            if (message._id || message.tempId) {
+                existingDiv = messagesArea.querySelector(`[data-msgid='${message._id || message.tempId}']`);
+            }
+            let messageDiv = existingDiv || document.createElement('div');
+            messageDiv.className = `message ${message.senderId === userId ? 'sent' : 'received'}`;
+            messageDiv.setAttribute('data-msgid', message._id || message.tempId || '');
+            let messageContent = '';
+            switch(message.type) {
+                case 'sticker':
+                    messageContent = `<div style="font-size: 3rem; text-align: center;">${message.content}</div>`;
+                    break;
+                case 'image':
+                    messageContent = `<img src="${message.content}" alt="Image" style="max-width: 200px; max-height: 200px; border-radius: 10px; cursor: pointer;" onclick="window.open('${message.content}', '_blank')">`;
+                    break;
+                case 'file':
+                    try {
+                        const fileInfo = JSON.parse(message.content);
+                        messageContent = `
+                            <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 8px;">
+                                <i class="fas fa-file" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <div style="font-weight: 500;">${fileInfo.name}</div>
+                                    <div style="font-size: 0.8rem; opacity: 0.7;">${(fileInfo.size / 1024).toFixed(1)} KB</div>
+                                </div>
+                            </div>
+                        `;
+                    } catch (e) {
+                        messageContent = message.content;
+                    }
+                    break;
+                case 'location':
+                    messageContent = `<div style="color: #007bff; cursor: pointer;" onclick="window.open('${message.content.split(': ')[1]}', '_blank')">${message.content}</div>`;
+                    break;
+                case 'voice':
+                    messageContent = `
+                        <div style="display: flex; align-items: center; gap: 10px; padding: 8px; background: rgba(255,75,139,0.1); border-radius: 8px;">
+                            <div style="display: flex; align-items: center; gap: 2px;">
+                                <div style="width: 3px; height: 15px; background: #ff4b8b; border-radius: 2px;"></div>
+                                <div style="width: 3px; height: 20px; background: #ff4b8b; border-radius: 2px;"></div>
+                                <div style="width: 3px; height: 12px; background: #ff4b8b; border-radius: 2px;"></div>
+                                <div style="width: 3px; height: 18px; background: #ff4b8b; border-radius: 2px;"></div>
+                                <div style="width: 3px; height: 14px; background: #ff4b8b; border-radius: 2px;"></div>
+                            </div>
+                            <audio controls style="max-width: 150px; height: 30px;">
+                                <source src="${message.content}" type="audio/webm">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    `;
+                    break;
+                default:
+                    messageContent = message.content;
+            }
+            let statusIcon = '';
+            if (message.senderId === userId) {
+                if (message.status === 'sending') {
+                    statusIcon = '<i class="fas fa-clock" style="color: #999; font-size: 0.7rem; margin-left: 5px;" title="Sending"></i>';
+                } else if (message.read || message.status === 'read') {
+                    statusIcon = '<i class="fas fa-check-double" style="color: #4CAF50; font-size: 0.7rem; margin-left: 5px;" title="Read"></i>';
+                } else if (message.delivered || message.status === 'delivered') {
+                    statusIcon = '<i class="fas fa-check" style="color: #999; font-size: 0.7rem; margin-left: 5px;" title="Delivered"></i>';
+                } else {
+                    statusIcon = '<i class="fas fa-clock" style="color: #999; font-size: 0.7rem; margin-left: 5px;" title="Sending"></i>';
+                }
+            }
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    ${messageContent}
+                    <div class="message-time">
+                        ${formatTime(message.timestamp)}
+                        ${statusIcon}
+                    </div>
+                </div>
+            `;
+            if (!existingDiv) {
+                messagesArea.appendChild(messageDiv);
+            }
+            // Add long press for delete on own messages
+            if (message.senderId === userId && message._id) {
+                addLongPressListener(messageDiv, message._id);
+            }
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                if (recordedAudioBlob) {
+                    sendVoiceMessage(recordedAudioBlob);
+                    recordedAudioBlob = null;
+                    recordingState = 'idle';
+                    document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
+                } else {
+                    sendMessage();
+                }
+            }
+        }
+
+        function handleTyping() {
+            const messageInput = document.getElementById('messageInput');
+            const sendBtn = document.getElementById('sendBtn');
+            sendBtn.disabled = messageInput.value.trim() === '';
+            if (socket && chatUserId && currentUser) {
+                const displayName = getUserDisplayName(currentUser);
+                socket.emit('typing', { toUserId: chatUserId, fromUserName: displayName });
+            }
+        }
+
+        function showTypingIndicator(name) {
+            const typingDiv = document.getElementById('typingIndicator');
+            document.getElementById('typingUser').textContent = name;
+            typingDiv.style.display = 'block';
+            clearTimeout(window._typingTimeout);
+            window._typingTimeout = setTimeout(() => {
+                typingDiv.style.display = 'none';
+            }, 2000);
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function initializeEmojiPicker() {
+            const emojis = ['😀', '😂', '😍', '😘', '😊', '😉', '😎', '😢', '😭', '😡', '😱', '😴', '🤔', '🙄', '😇', '🤗', '🤤', '😋', '😜', '🤪', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩'];
+            const emojiPicker = document.getElementById('emojiPicker');
+            emojiPicker.innerHTML = emojis.map(emoji => `<span class="emoji" onclick="insertEmoji('${emoji}')">${emoji}</span>`).join('');
+        }
+
+        function toggleEmojiPicker() {
+            const emojiPicker = document.getElementById('emojiPicker');
+            emojiPicker.style.display = emojiPicker.style.display === 'grid' ? 'none' : 'grid';
+        }
+
+        function insertEmoji(emoji) {
+            const messageInput = document.getElementById('messageInput');
+            messageInput.value += emoji;
+            messageInput.focus();
+            handleTyping();
+            toggleEmojiPicker();
+        }
+
+        function showAttachmentOptions() {
+            document.getElementById('fileInput').click();
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                sendFileMessage(file);
+            }
+        });
+
+        function sendFileMessage(file) {
+            const userId = getCurrentUserId();
+            if (!currentUser || !userId || !chatUserId) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const base64 = e.target.result;
+                const fileInfo = {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type
+                };
+                socket.emit('send-message', {
+                    senderId: userId,
+                    receiverId: chatUserId,
+                    content: JSON.stringify(fileInfo) + '|' + base64,
+                    type: 'file'
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function toggleNotificationDropdown() {
+            const dropdown = document.getElementById('notificationDropdown');
+            const isVisible = dropdown.style.display === 'block';
+            dropdown.style.display = isVisible ? 'none' : 'block';
+            
+            // Clear notifications when dropdown is opened
+            if (!isVisible && notifications.length > 0) {
+                setTimeout(() => {
+                    clearNotifications();
+                }, 1000);
+            }
+        }
+
+        function clearNotifications() {
+            notifications = [];
+            unreadMessageCount = 0;
+            updateNotificationUI();
+        }
+
+        function loadNotifications() {
+            notifications = [];
+            unreadMessageCount = 0;
+            
+            // Request browser notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+
+        function findUserName(userId) {
+            const user = chatUsers.find(u => (u._id || u.id || u.email) === userId);
+            return getUserDisplayName(user);
+        }
+
+        function handleNotificationClick(userId) {
+            if (userId && userId !== chatUserId) {
+                window.location.href = `chat.html?userId=${userId}`;
+            }
+            toggleNotificationDropdown();
+        }
+
+        function showBrowserNotification(title, body) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notification = new Notification(title, {
+                    body: body.length > 50 ? body.substring(0, 50) + '...' : body,
+                    icon: 'Icon.png',
+                    badge: 'Icon.png',
+                    tag: 'findlove-message'
+                });
+                
+                notification.onclick = function() {
+                    window.focus();
+                    notification.close();
+                };
+                
+                setTimeout(() => notification.close(), 5000);
+            }
+        }
+
+        function updateNotificationUI() {
+            const badge = document.getElementById('notificationBadge');
+            const menuBadge = document.getElementById('notificationBadgeMenu');
+            const totalNotifications = notifications.length + unreadMessageCount;
+
+            badge.textContent = totalNotifications > 0 ? totalNotifications : '';
+            badge.style.display = totalNotifications > 0 ? 'inline-block' : 'none';
+
+            if (menuBadge) {
+                menuBadge.textContent = totalNotifications > 0 ? totalNotifications : '';
+                menuBadge.style.display = totalNotifications > 0 ? 'inline-block' : 'none';
+            }
+            
+            const list = document.getElementById('notificationList');
+            if (list) {
+                if (notifications.length === 0) {
+                    list.innerHTML = '<div style="padding:16px;color:#888;text-align:center;">No notifications</div>';
+                } else {
+                    list.innerHTML = notifications.slice(0,8).map(n =>
+                        `<div style="padding:12px 16px;border-bottom:1px solid #f0f0f0;font-size:0.97rem;cursor:pointer;" onclick="handleNotificationClick('${n.userId || ''}')">
+                            <i class="fas ${n.type === 'message' ? 'fa-envelope' : 'fa-bell'}" style="color:#ff4b8b;margin-right:8px;"></i> ${n.content}
+                            <div style="font-size:0.8rem;color:#aaa;">${formatTime(n.timestamp)}</div>
+                        </div>`
+                    ).join('');
+                }
+            }
+            loadFriendRequestsForPanel();
+        }
+
+        async function loadFriendRequestsForPanel() {
+            try {
+                const myId = getCurrentUserId();
+                if (!myId) return;
+                const panel = document.getElementById('friendRequestsPanel');
+                if (!panel) return;
+                const resp = await fetch(`http://localhost:3001/api/friend-requests/${myId}`);
+                const data = await resp.json();
+                if (data.success && data.requests.length) {
+                    panel.style.display = 'block';
+                    panel.innerHTML = data.requests.map(r => `
+                        <div style=\"padding:12px 16px;border-bottom:1px solid #f0f0f0;font-size:0.95rem;\">
+                            <div style=\"margin-bottom:8px;\">Friend request from <strong>${findUserName(r.fromUserId) || 'User'}</strong></div>
+                            <div style=\"display:flex;gap:8px;\">
+                                <button onclick=\"respondToFriendRequest('${r._id}','accept')\" style=\"padding:6px 10px;background:#4CAF50;color:white;border:none;border-radius:6px;cursor:pointer;\">Accept</button>
+                                <button onclick=\"respondToFriendRequest('${r._id}','decline')\" style=\"padding:6px 10px;background:#f44336;color:white;border:none;border-radius:6px;cursor:pointer;\">Decline</button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    panel.style.display = 'none';
+                    panel.innerHTML = '';
+                }
+            } catch (error) {
+                console.error('Error loading friend requests:', error);
+            }
+        }
+
+        async function respondToFriendRequest(requestId, action) {
+            try {
+                const resp = await fetch(`http://localhost:3001/api/friend-requests/${requestId}/respond`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action })
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    updateNotificationUI();
+                    loadMessages();
+                    // Update friend button state after responding
+                    updateFriendButtonState(chatUserId);
+                    // FIXED: Reload chat user data to show online status if now friends
+                    if (action === 'accept') {
+                        loadChatUser();
+                    }
+                }
+            } catch (error) {
+                console.error('Error responding to friend request:', error);
+            }
+        }
+
+        async function updateFriendButtonState(otherUserId) {
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('user'));
+                const myId = currentUser?.id || currentUser?._id || currentUser?.email;
+                const resp = await fetch(`http://localhost:3001/api/friendship-status/${myId}/${otherUserId}`);
+                const data = await resp.json();
+                if (data.success) {
+                    setFriendButtonState(otherUserId, data.status, data.role);
+                }
+            } catch {}
+        }
+
+        function setFriendButtonState(userId, status, role) {
+            const btn = document.getElementById('friendBtn');
+            if (!btn) return;
+            if (status === 'pending') {
+                if (role === 'sender') {
+                    btn.innerHTML = '<i class="fas fa-hourglass-half"></i> Pending';
+                    btn.setAttribute('data-state', 'pending');
+                    btn.disabled = true;
+                    btn.style.background = '#ffa726';
+                    btn.style.cursor = 'not-allowed';
+                } else {
+                    btn.innerHTML = '<i class="fas fa-user-plus"></i> Add Friend';
+                    btn.setAttribute('data-state', 'none');
+                    btn.disabled = false;
+                    btn.style.background = 'var(--primary)';
+                    btn.style.cursor = 'pointer';
+                }
+            } else if (status === 'accepted') {
+                btn.innerHTML = '<i class="fas fa-user-check"></i> Friends';
+                btn.setAttribute('data-state', 'accepted');
+                btn.disabled = true;
+                btn.style.background = '#4CAF50';
+                btn.style.cursor = 'not-allowed';
+            } else {
+                btn.innerHTML = '<i class="fas fa-user-plus"></i> Add Friend';
+                btn.setAttribute('data-state', 'none');
+                btn.disabled = false;
+                btn.style.background = 'var(--primary)';
+                btn.style.cursor = 'pointer';
+            }
+        }
+
+        async function toggleFriendRequest() {
+            const btn = document.getElementById('friendBtn');
+            if (!btn) return;
+            if (btn.getAttribute('data-state') === 'pending') {
+                await cancelFriendRequest(chatUserId);
+            } else {
+                await sendFriendRequest();
+            }
+        }
+
+        async function sendFriendRequest() {
+            try {
+                const fromUserId = getCurrentUserId();
+                const toUserId = chatUserId;
+                if (!fromUserId || !toUserId) return;
+                const resp = await fetch('http://localhost:3001/api/friend-request', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fromUserId, toUserId })
+                });
+                const data = await resp.json();
+                if (data.success) {
+                    showErrorMessage('Friend request sent. Waiting for acceptance.');
+                    setFriendButtonState(chatUserId, 'pending', 'sender');
+                } else {
+                    showErrorMessage(data.message || 'Unable to send friend request');
+                }
+            } catch (e) {
+                showErrorMessage('Network error sending friend request');
+            }
+        }
+
+        async function cancelFriendRequest(userId) {
+            try {
+                const currentUser = JSON.parse(localStorage.getItem('user'));
+                const fromUserId = currentUser?.id || currentUser?._id;
+                const resp = await fetch('http://localhost:3001/api/friendship-status/' + fromUserId + '/' + userId);
+                const st = await resp.json();
+                const response = await fetch('http://localhost:3001/api/friend-request/cancel', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ requestId: st.requestId, fromUserId, toUserId: userId })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    setFriendButtonState(userId, 'none');
+                } else {
+                    showErrorMessage(data.message || 'Unable to cancel request');
+                }
+            } catch (e) {
+                showErrorMessage('Network error canceling request');
+            }
+        }
+
+        function connectSocket() {
+            try {
+                socket = io('http://localhost:3001');
+
+                socket.on('connect', () => {
+                    console.log(' Connected to chat server');
+                    socket.emit('join', getCurrentUserId());
+                });
+
+                socket.on('receive-message', (msg) => {
+                    console.log(' Received message:', msg);
+                    if ((msg.senderId === getCurrentUserId() && msg.receiverId === chatUserId) ||
+                        (msg.senderId === chatUserId && msg.receiverId === getCurrentUserId())) {
+                        addMessageToUI(msg);
+                    } else if (msg.receiverId === getCurrentUserId() && msg.senderId !== getCurrentUserId()) {
+                        const senderName = findUserName(msg.senderId) || 'User';
+                        notifications.unshift({
+                            type: 'message',
+                            content: `New message from ${senderName}`,
+                            timestamp: new Date(),
+                            userId: msg.senderId,
+                            messageId: msg._id
+                        });
+
+                        if (notifications.length > 20) notifications.length = 20;
+                        updateNotificationUI();
+                        showBrowserNotification(`New message from ${senderName}`, msg.content);
+                    }
+                });
+
+                socket.on('typing', ({ fromUserName }) => {
+                    showTypingIndicator(fromUserName);
+                });
+
+                // FIXED: Add real-time online status updates
+                socket.on('user-online', (userId) => {
+                    console.log(' User came online:', userId);
+                    if (userId === chatUserId) {
+                        updateChatUserStatus(true, null);
+                    }
+                    // Update chat list status
+                    updateChatListUserStatus(userId, true, null);
+                });
+
+                socket.on('user-offline', (userId) => {
+                    console.log(' User went offline:', userId);
+                    if (userId === chatUserId) {
+                        updateChatUserStatus(false, new Date());
+                    }
+                    // Update chat list status
+                    updateChatListUserStatus(userId, false, new Date());
+                });
+
+                socket.on('error', (error) => {
+                    console.error(' Socket error:', error);
+                    showErrorMessage('Chat connection error: ' + error);
+                });
+
+                socket.on('disconnect', () => {
+                    console.log(' Disconnected from chat server');
+                    showErrorMessage('Chat disconnected. Trying to reconnect...');
+                });
+
+                socket.on('connect_error', (error) => {
+                    console.error(' Connection error:', error);
+                    showErrorMessage('Cannot connect to chat server. Please check if the server is running.');
+                });
+
+            } catch (error) {
+                console.error(' Socket.IO initialization error:', error);
+                showErrorMessage('Chat system unavailable. Please refresh the page.');
+            }
+        }
+
+        function showChatMenu() {
+            const dropdown = document.getElementById('chatMenuDropdown');
+            const isVisible = dropdown.style.display === 'block';
+            if (!isVisible) {
+                // Update menu button state to match main button
+                const mainBtn = document.getElementById('friendBtn');
+                const menuBtn = document.getElementById('friendBtnMenu');
+                if (mainBtn && menuBtn) {
+                    menuBtn.innerHTML = mainBtn.innerHTML;
+                    menuBtn.setAttribute('data-state', mainBtn.getAttribute('data-state'));
+                    menuBtn.disabled = mainBtn.disabled;
+                    menuBtn.style.background = mainBtn.style.background;
+                    menuBtn.style.cursor = mainBtn.style.cursor;
+                }
+            }
+            dropdown.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function hideChatMenu() {
+            document.getElementById('chatMenuDropdown').style.display = 'none';
+        }
+
+        function showErrorMessage(message) {
+            const messagesArea = document.getElementById('messagesArea');
+            const errorDiv = document.createElement('div');
+            errorDiv.style.cssText = 'padding: 10px; margin: 10px; background: #ffebee; color: #c62828; border-radius: 8px; text-align: center; border: 1px solid #ffcdd2;';
+            errorDiv.textContent = message;
+            messagesArea.appendChild(errorDiv);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+
+        function addLongPressListener(element, messageId) {
+            let pressTimer;
+            const longPressDuration = 500; // ms
+
+            function startPress() {
+                pressTimer = setTimeout(() => {
+                    showCustomAlert('Delete Message', 'Are you sure you want to delete this message?', 'warning', 'deleteMessage("' + messageId + '")');
+                }, longPressDuration);
+            }
+
+            function cancelPress() {
+                clearTimeout(pressTimer);
+            }
+
+            element.addEventListener('mousedown', startPress);
+            element.addEventListener('mouseup', cancelPress);
+            element.addEventListener('mouseleave', cancelPress);
+
+            element.addEventListener('touchstart', startPress);
+            element.addEventListener('touchend', cancelPress);
+            element.addEventListener('touchcancel', cancelPress);
+        }
+
+        function goBack() {
+            window.location.href = 'home.html';
+        }
+
+        let localStream;
+        let remoteStream;
+        let peerConnection;
+
+        async function startVoiceCall() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                // For voice call, perhaps open a modal or something, but for now, just alert
+                alert('Voice call started. Feature in development.');
+            } catch (error) {
+                alert('Microphone access denied.');
+            }
+        }
+
+        async function startVideoCall() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const localVideo = document.getElementById('localVideo');
+                if (localVideo) {
+                    localVideo.srcObject = localStream;
+                }
+                document.getElementById('videoCallModal').style.display = 'block';
+                // For remote, would need WebRTC signaling, but for now, just local
+            } catch (error) {
+                alert('Camera/microphone access denied.');
+            }
+        }
+
+        function endVideoCall() {
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+            }
+            if (remoteStream) {
+                remoteStream.getTracks().forEach(track => track.stop());
+            }
+            if (peerConnection) {
+                peerConnection.close();
+            }
+            document.getElementById('videoCallModal').style.display = 'none';
+        }
+
+        function toggleVideo() {
+            if (localStream) {
+                const videoTrack = localStream.getVideoTracks()[0];
+                if (videoTrack) {
+                    videoTrack.enabled = !videoTrack.enabled;
+                    document.getElementById('videoBtn').style.background = videoTrack.enabled ? '#4CAF50' : '#f44336';
+                }
+            }
+        }
+
+        function toggleAudio() {
+            if (localStream) {
+                const audioTrack = localStream.getAudioTracks()[0];
+                if (audioTrack) {
+                    audioTrack.enabled = !audioTrack.enabled;
+                    document.getElementById('audioBtn').style.background = audioTrack.enabled ? '#4CAF50' : '#f44336';
+                }
+            }
+        }
+
+        // Mobile sidebar functions
+        function toggleSidebar() {
+            const sidebar = document.getElementById('chatSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('show');
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('chatSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('chatSidebar');
+            const menuBtn = document.getElementById('menuBtn');
+            
+            if (window.innerWidth <= 768 && 
+                sidebar.classList.contains('open') && 
+                !sidebar.contains(event.target) && 
+                !menuBtn.contains(event.target)) {
+                closeSidebar();
+            }
+        });
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeSidebar();
+            }
+        });
+
+        let mediaRecorder;
+        let audioChunks = [];
+        let recordingState = 'idle'; // 'idle', 'recording', 'recorded'
+        let recordedAudioBlob = null;
+        let stream = null;
+
+        function toggleVoiceRecording() {
+          if (recordingState === 'idle') {
+            startRecording();
+          } else if (recordingState === 'recording') {
+            stopRecording();
+          } else if (recordingState === 'recorded') {
+            sendVoiceMessage(recordedAudioBlob);
+            recordedAudioBlob = null;
+            recordingState = 'idle';
+            document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
+          }
+        }
+
+        async function startRecording() {
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = event => {
+              if (event.data.size > 0) {
+                audioChunks.push(event.data);
+              }
+            };
+
+            mediaRecorder.onstop = () => {
+              if (audioChunks.length > 0) {
+                recordedAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                recordingState = 'recorded';
+                document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-paper-plane"></i>';
+              }
+            };
+
+            mediaRecorder.start();
+            recordingState = 'recording';
+            // Change button icon to stop
+            document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-stop"></i>';
+          } catch (err) {
+            showErrorMessage('Microphone access denied or not available. Please allow microphone access and try again.');
+          }
+        }
+
+        function stopRecording() {
+          if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+          }
+          // Stop the stream
+          if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+          }
+          // State and icon updated in onstop
+        }
+
+        function cancelRecording() {
+          if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            mediaRecorder.stop();
+            audioChunks = []; // Discard
+          }
+          // Stop the stream
+          if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+          }
+          recordingState = 'idle';
+          recordedAudioBlob = null;
+          // Reset button icon
+          document.getElementById('voiceBtn').innerHTML = '<i class="fas fa-microphone"></i>';
+        }
+
+        async function deleteMessage(messageId) {
+            try {
+                const userId = getCurrentUserId();
+                const response = await fetch(`http://localhost:3001/api/messages/${messageId}`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    // Remove the message from UI
+                    const messageDiv = document.querySelector(`[data-msgid='${messageId}']`);
+                    if (messageDiv) {
+                        messageDiv.remove();
+                    }
+                    showErrorMessage('Message deleted successfully');
+                } else {
+                    showErrorMessage(data.message || 'Failed to delete message');
+                }
+            } catch (error) {
+                console.error('Error deleting message:', error);
+                showErrorMessage('Error deleting message');
+            }
+        }
+
+        function displayVoiceMessage(audioBlob) {
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const voiceMsg = document.createElement('div');
+          voiceMsg.className = 'voice-bubble';
+
+          voiceMsg.innerHTML = `
+            <i class="fas fa-microphone"></i>
+            <audio controls src="${audioUrl}"></audio>
+          `;
+
+          const chatContainer = document.getElementById('chatMessages') || document.body;
+          chatContainer.appendChild(voiceMsg);
+        }
+
+        function sendVoiceMessage(audioBlob) {
+          const reader = new FileReader();
+          reader.onloadend = function () {
+            const base64Audio = reader.result;
+            const userId = getCurrentUserId();
+            if (!currentUser || !userId || !chatUserId) return;
+
+            socket.emit('send-message', {
+              senderId: userId,
+              receiverId: chatUserId,
+              content: base64Audio,
+              type: 'voice'
+            });
+          };
+          reader.readAsDataURL(audioBlob);
+        }
+
+        // Custom Alert System
+        function showCustomAlert(title, message, type = 'info', callback = null) {
+            const existingAlert = document.querySelector('.custom-alert-overlay');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-alert-overlay';
+
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-times-circle"></i>';
+                    break;
+                case 'warning':
+                    icon = '<i class="fas fa-exclamation-triangle"></i>';
+                    break;
+                case 'info':
+                default:
+                    icon = '<i class="fas fa-info-circle"></i>';
+                    break;
+            }
+
+            overlay.innerHTML = `
+                <div class="custom-alert">
+                    <div class="custom-alert-icon ${type}">
+                        ${icon}
+                    </div>
+                    <div class="custom-alert-title">${title}</div>
+                    <div class="custom-alert-message">${message}</div>
+                    <button class="custom-alert-button" onclick="closeCustomAlert()">
+                        OK
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                overlay.classList.add('show');
+            }, 10);
+
+            if (callback) {
+                overlay.setAttribute('data-callback', callback);
+            }
+        }
+
+        function closeCustomAlert() {
+            const overlay = document.querySelector('.custom-alert-overlay');
+            if (overlay) {
+                const callback = overlay.getAttribute('data-callback');
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.remove();
+                    if (callback) {
+                        eval(callback);
+                    }
+                }, 300);
+            }
+        }
+
+        // FIXED: Function to update chat user status in real-time
+        function updateChatUserStatus(isOnline, lastSeen) {
+            const statusEl = document.getElementById('chatUserStatus');
+            if (!statusEl) return;
+
+            if (isOnline) {
+                statusEl.textContent = 'Online';
+                statusEl.style.color = '#4CAF50';
+            } else if (lastSeen) {
+                const d = new Date(lastSeen);
+                statusEl.textContent = 'Last seen ' + d.toLocaleString();
+                statusEl.style.color = '#888';
+            } else {
+                statusEl.textContent = '';
+            }
+        }
+
+        // FIXED: Function to update chat list user status in real-time
+        function updateChatListUserStatus(userId, isOnline, lastSeen) {
+            // Find the chat list item for this user
+            const chatListItems = document.querySelectorAll('.chat-list-item');
+            for (const item of chatListItems) {
+                const onclickAttr = item.getAttribute('onclick');
+                if (onclickAttr && onclickAttr.includes(`'${userId}'`)) {
+                    // Update the online indicator dot
+                    const imgContainer = item.querySelector('div[style*="position:relative"]');
+                    if (imgContainer) {
+                        const existingDot = imgContainer.querySelector('div[style*="position:absolute"]');
+                        if (existingDot) {
+                            existingDot.remove();
+                        }
+                        if (isOnline) {
+                            const dot = document.createElement('div');
+                            dot.style.cssText = 'position:absolute;bottom:2px;right:2px;width:12px;height:12px;background:#4CAF50;border:2px solid white;border-radius:50%;';
+                            imgContainer.appendChild(dot);
+                        }
+                    }
+
+                    // Update the status text
+                    const statusDiv = item.querySelector('div[style*="font-size:0.8rem"]');
+                    if (statusDiv) {
+                        let statusText = '';
+                        let statusColor = '#888';
+                        if (isOnline) {
+                            statusText = 'Online';
+                            statusColor = '#4CAF50';
+                        } else if (lastSeen) {
+                            const d = new Date(lastSeen);
+                            const now = new Date();
+                            const diffMs = now - d;
+                            const diffMins = Math.floor(diffMs / 60000);
+                            const diffHours = Math.floor(diffMins / 60);
+                            const diffDays = Math.floor(diffHours / 24);
+
+                            if (diffMins < 1) {
+                                statusText = 'Just now';
+                            } else if (diffMins < 60) {
+                                statusText = `${diffMins}m ago`;
+                            } else if (diffHours < 24) {
+                                statusText = `${diffHours}h ago`;
+                            } else if (diffDays < 7) {
+                                statusText = `${diffDays}d ago`;
+                            } else {
+                                statusText = d.toLocaleDateString();
+                            }
+                        }
+
+                        if (statusText) {
+                            statusDiv.textContent = statusText;
+                            statusDiv.style.color = statusColor;
+                        } else {
+                            statusDiv.textContent = '';
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    </script>
+</body>
+</html>

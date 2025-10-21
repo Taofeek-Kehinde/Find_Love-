@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile - FindLove</title>
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --accent: #45b7d1;
+            --dark: #2c3e50;
+            --light: #f8f9fa;
+            --gray: #e9ecef;
+            --text: #495057;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .setup-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .setup-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .setup-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hearts" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><text x="10" y="15" text-anchor="middle" fill="rgba(255,255,255,0.1)" font-size="12">💕</text></pattern></defs><rect width="100" height="100" fill="url(%23hearts)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .setup-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .setup-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.3);
+            margin-top: 20px;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .setup-content {
+            padding: 40px;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .step-description {
+            color: var(--text);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--gray);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .image-upload {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .upload-box {
+            width: 150px;
+            height: 150px;
+            border: 3px dashed var(--primary);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: var(--light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-box:hover {
+            border-color: var(--secondary);
+            background: rgba(255, 107, 107, 0.05);
+        }
+
+        .upload-box.has-image {
+            border-style: solid;
+            border-color: var(--success);
+        }
+
+        .upload-box i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .upload-box span {
+            color: var(--text);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .upload-box input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .interest-tag {
+            padding: 10px 15px;
+            background: var(--light);
+            border: 2px solid var(--gray);
+            border-radius: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .interest-tag:hover {
+            border-color: var(--primary);
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .interest-tag.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .step-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--gray);
+            color: var(--text);
+            min-width: 120px;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text);
+            margin-top: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .setup-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .setup-header {
+                padding: 20px;
+            }
+
+            .setup-header h1 {
+                font-size: 2rem;
+            }
+
+            .setup-content {
+                padding: 20px;
+            }
+
+            .step-title {
+                font-size: 1.5rem;
+            }
+
+            .image-upload {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .upload-box {
+                width: 120px;
+                height: 120px;
+            }
+
+            .interests-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .step-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .setup-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .setup-content {
+                padding: 15px;
+            }
+
+            .upload-box {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <div class="setup-header">
+            <h1><i class="fas fa-heart"></i> Complete Your Profile</h1>
+            <p>Let's make your profile shine and help you find your perfect match!</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="setup-content">
+
+            <!-- Step 1: Profile Picture -->
+            <div class="step active" id="step1">
+                <h2 class="step-title">📸 Add Your Profile Picture</h2>
+                <p class="step-description">Upload a clear profile image</p>
+                <div class="image-upload">
+                    <div class="upload-box" id="profileUpload" onclick="document.getElementById('profilePic').click()">
+                        <i class="fas fa-user"></i>
+                        <span>Profile Picture</span>
+                        <input type="file" id="profilePic" accept="image/*" onchange="handleImageUpload(this, 'profileUpload')">
+                        <small style="color:var(--text);font-size:0.85rem;">Max size: 100MB</small>
+                    </div>
+                </div>
+                <div style="text-align:center;margin-top:10px;">
+                    <button class="btn btn-secondary" style="min-width:auto;padding:8px 14px;" onclick="clearProfileImage()" type="button">Remove</button>
+                </div>
+                <div class="step-buttons">
+                    <button class="btn btn-secondary" onclick="skipStep()">Skip for now</button>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Personal Info -->
+            <div class="step" id="step2">
+                <h2 class="step-title">👤 Tell us about yourself</h2>
+                <p class="step-description">Share some basic information to help us find your perfect match</p>
+                <div class="form-group">
+                    <label for="dateOfBirth">Date of Birth</label>
+                    <input type="date" id="dateOfBirth" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">Your Location</label>
+                    <input type="text" id="location" placeholder="Enter your city, state, or country" required>
+                </div>
+                <div class="step-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" onclick="nextStep()">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Interests -->
+            <div class="step" id="step3">
+                <h2 class="step-title">❤️ What are your interests?</h2>
+                <p class="step-description">Select your interests to help us find compatible matches</p>
+
+                <div class="form-group">
+                    <label>Choose your interests (select at least 3)</label>
+                    <div class="interests-grid" id="interestsGrid">
+                        <!-- Interests will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="step-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" id="interestsNext" onclick="nextStep()" disabled>
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Bio -->
+            <div class="step" id="step4">
+                <h2 class="step-title">✍️ Tell us about yourself</h2>
+                <p class="step-description">Write a brief bio to let others know who you are</p>
+
+                <div class="form-group">
+                    <label for="bio">Your Bio</label>
+                    <textarea id="bio" placeholder="Tell us about yourself, your hobbies, what you're looking for..." maxlength="500" oninput="updateCharCount()"></textarea>
+                    <div class="character-count" id="charCount">0/500 characters</div>
+                </div>
+
+                <div class="step-buttons">
+                    <button class="btn btn-secondary" onclick="prevStep()">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn btn-primary" onclick="completeProfile()">
+                        <i class="fas fa-check"></i> Complete Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+        let profileData = {
+            profilePic: null,
+            dateOfBirth: '',
+            gender: '',
+            location: '',
+            interests: [],
+            bio: ''
+        };
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            populateInterests();
+            updateProgress();
+            preloadExistingProfile();
+
+            // Auto-save events
+            const dobInput = document.getElementById('dateOfBirth');
+            if (dobInput) {
+                dobInput.addEventListener('change', () => {
+                    profileData.dateOfBirth = dobInput.value;
+                    autoSaveProfile({ dateOfBirth: profileData.dateOfBirth });
+                });
+            }
+            const genderSelect = document.getElementById('gender');
+            if (genderSelect) {
+                genderSelect.addEventListener('change', () => {
+                    profileData.gender = genderSelect.value;
+                    autoSaveProfile({ gender: profileData.gender });
+                });
+            }
+            const locInput = document.getElementById('location');
+            if (locInput) {
+                locInput.addEventListener('input', debounce(() => {
+                    profileData.location = locInput.value.trim();
+                    autoSaveProfile({ location: profileData.location });
+                }, 500));
+            }
+            const bioInput = document.getElementById('bio');
+            if (bioInput) {
+                bioInput.addEventListener('input', debounce(() => {
+                    profileData.bio = bioInput.value;
+                    autoSaveProfile({ bio: profileData.bio });
+                }, 700));
+            }
+        });
+
+        // Check if user is authenticated
+        function checkAuth() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+        }
+
+        function preloadExistingProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                if (user.profilePic) {
+                    const uploadBox = document.getElementById('profileUpload');
+                    uploadBox.innerHTML = `<img src="${user.profilePic}" alt="Uploaded image">`;
+                    uploadBox.classList.add('has-image');
+                    profileData.profilePic = user.profilePic;
+                }
+                if (user.dateOfBirth) {
+                    document.getElementById('dateOfBirth').value = user.dateOfBirth;
+                    profileData.dateOfBirth = user.dateOfBirth;
+                }
+                if (user.gender) {
+                    document.getElementById('gender').value = user.gender;
+                    profileData.gender = user.gender;
+                }
+                if (user.location) {
+                    document.getElementById('location').value = user.location;
+                    profileData.location = user.location;
+                }
+                if (user.interests) {
+                    const arr = String(user.interests).split(',').map(i => i.trim()).filter(Boolean);
+                    profileData.interests = arr;
+                    arr.forEach(i => {
+                        const tag = document.querySelector(`[data-interest="${i}"]`);
+                        if (tag) tag.classList.add('selected');
+                    });
+                    document.getElementById('interestsNext').disabled = profileData.interests.length < 3;
+                }
+                if (user.bio) {
+                    document.getElementById('bio').value = user.bio;
+                    profileData.bio = user.bio;
+                    updateCharCount();
+                }
+            } catch {}
+        }
+
+        // Populate interests grid
+        function populateInterests() {
+            const interests = [
+                'Music', 'Travel', 'Sports', 'Movies', 'Reading', 'Cooking',
+                'Photography', 'Dancing', 'Gaming', 'Art', 'Fitness', 'Nature',
+                'Technology', 'Fashion', 'Food', 'Animals', 'Adventure', 'Yoga',
+                'Swimming', 'Running', 'Hiking', 'Cycling', 'Meditation', 'Writing',
+                'Shopping', 'Comedy', 'Theater', 'Concerts', 'Festivals', 'Beach'
+            ];
+
+            const grid = document.getElementById('interestsGrid');
+            grid.innerHTML = interests.map(interest => `
+                <div class="interest-tag" onclick="toggleInterest('${interest}')" data-interest="${interest}">
+                    ${interest}
+                </div>
+            `).join('');
+        }
+
+        // Toggle interest selection
+        function toggleInterest(interest) {
+            const tag = document.querySelector(`[data-interest="${interest}"]`);
+            const index = profileData.interests.indexOf(interest);
+
+            if (index > -1) {
+                profileData.interests.splice(index, 1);
+                tag.classList.remove('selected');
+            } else {
+                profileData.interests.push(interest);
+                tag.classList.add('selected');
+            }
+
+            // Enable/disable next button based on selection
+            const nextBtn = document.getElementById('interestsNext');
+            nextBtn.disabled = profileData.interests.length < 3;
+
+            // Auto-save interests
+            autoSaveProfile({ interests: profileData.interests });
+        }
+
+        // Handle image upload
+        function handleImageUpload(input, uploadBoxId) {
+            const file = input.files[0];
+            if (!file) return;
+            if (file.size > 100 * 1024 * 1024) { // 100MB
+                alert('Image size must be less than 100MB');
+                input.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const uploadBox = document.getElementById(uploadBoxId);
+                uploadBox.innerHTML = `<img src="${e.target.result}" alt="Uploaded image">`;
+                uploadBox.classList.add('has-image');
+                // Store the image data
+                if (uploadBoxId === 'profileUpload') {
+                    profileData.profilePic = e.target.result;
+                }
+                // Persist to localStorage immediately so it stays after refresh
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const updatedUser = { ...user, profilePic: profileData.profilePic };
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+
+                // Auto-save to backend
+                autoSaveProfile({ profilePic: profileData.profilePic });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearProfileImage() {
+            const uploadBox = document.getElementById('profileUpload');
+            uploadBox.innerHTML = '<i class="fas fa-user"></i><span>Profile Picture</span>';
+            uploadBox.classList.remove('has-image');
+            profileData.profilePic = null;
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const updatedUser = { ...user };
+            delete updatedUser.profilePic;
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+
+            // Auto-save removal
+            autoSaveProfile({ profilePic: null });
+        }
+
+        // Debounce helper
+        function debounce(fn, wait) {
+            let t;
+            return function() {
+                clearTimeout(t);
+                const args = arguments;
+                t = setTimeout(() => fn.apply(null, args), wait);
+            }
+        }
+
+        // Auto-save partial profile to backend
+        async function autoSaveProfile(partial) {
+            try {
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                const userId = user?.id || user?._id || user?.email;
+                if (!userId) return;
+
+                const payload = { userId, ...partial };
+                // Ensure interests shape matches API (array → server will join)
+                if (Array.isArray(payload.interests)) {
+                    payload.interests = payload.interests;
+                }
+
+                await fetch('http://localhost:3001/api/complete-profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+            } catch (e) {
+                // Silent fail; user can still submit on final step
+            }
+        }
+
+        // Update character count for bio
+        function updateCharCount() {
+            const bio = document.getElementById('bio');
+            const charCount = document.getElementById('charCount');
+            const count = bio.value.length;
+            charCount.textContent = `${count}/500 characters`;
+
+            if (count > 450) {
+                charCount.style.color = 'var(--danger)';
+            } else if (count > 400) {
+                charCount.style.color = 'var(--warning)';
+            } else {
+                charCount.style.color = 'var(--text)';
+            }
+
+            profileData.bio = bio.value;
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Navigate to next step
+        function nextStep() {
+            // Validate current step
+            if (!validateCurrentStep()) return;
+
+            if (currentStep < totalSteps) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        // Navigate to previous step
+        function prevStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        // Skip current step
+        function skipStep() {
+            nextStep();
+        }
+
+        // Validate current step
+        function validateCurrentStep() {
+            switch(currentStep) {
+                case 2:
+                    const dateOfBirth = document.getElementById('dateOfBirth').value;
+                    const gender = document.getElementById('gender').value;
+                    const location = document.getElementById('location').value.trim();
+                    if (!dateOfBirth) {
+                        alert('Please enter your date of birth');
+                        return false;
+                    }
+                    if (!gender) {
+                        alert('Please select your gender');
+                        return false;
+                    }
+                    if (!location) {
+                        alert('Please enter your location');
+                        return false;
+                    }
+                    profileData.dateOfBirth = dateOfBirth;
+                    profileData.gender = gender;
+                    profileData.location = location;
+                    break;
+                case 3:
+                    if (profileData.interests.length < 3) {
+                        alert('Please select at least 3 interests');
+                        return false;
+                    }
+                    break;
+            }
+            return true;
+        }
+
+        // Complete profile setup
+        async function completeProfile() {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                console.log('Current user from localStorage:', user);
+
+                const userId = user?.id || user?._id || user?.email;
+                console.log('User ID for profile update:', userId);
+                console.log('Profile data to send:', profileData);
+
+                if (!userId) {
+                    alert('User ID not found. Please login again.');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                const requestData = {
+                    userId: userId,
+                    ...profileData
+                };
+
+                console.log('Sending profile update request:', requestData);
+
+                let response;
+                try {
+                    response = await fetch('http://localhost:3001/api/complete-profile', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(requestData)
+                    });
+                    console.log('Response received, status:', response.status);
+                } catch (fetchError) {
+                    console.error('Fetch error:', fetchError);
+                    throw new Error('Cannot connect to server. Please make sure the server is running on port 3001.');
+                }
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                if (data.success) {
+                    // Update user data in localStorage
+                    const updatedUser = { ...user, ...profileData, profileCompleted: true };
+                    localStorage.setItem('user', JSON.stringify(updatedUser));
+
+                    // Redirect to login (index.html, login tab active)
+                    showSuccessMessageAndRedirect();
+                } else {
+                    console.error('Profile update failed:', data);
+                    alert('Failed to update profile: ' + (data.message || 'Unknown error'));
+                }
+
+            } catch (error) {
+                console.error('Error completing profile:', error);
+
+                // Show detailed error message
+                const errorMsg = error.message || 'Unknown error';
+                console.log('Full error details:', error);
+
+                alert(`Profile update failed: ${errorMsg}\n\nPlease make sure:\n1. The server is running on port 3001\n2. You have an internet connection\n3. Try refreshing the page and try again`);
+            }
+        }
+
+        // Show success message and redirect to login (index.html, login tab active)
+        function showSuccessMessageAndRedirect() {
+            document.querySelector('.setup-container').innerHTML = `
+                <div style="text-align: center; padding: 60px 40px;">
+                    <div style="font-size: 4rem; color: var(--success); margin-bottom: 20px;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2 style="color: var(--dark); margin-bottom: 15px;">Profile Updated Successfully!</h2>
+                    <p style="color: var(--text); margin-bottom: 30px; font-size: 1.1rem;">
+                        Your profile is now complete. Please login to start finding your perfect match!
+                    </p>
+                </div>
+            `;
+            setTimeout(() => {
+                // Redirect to index.html and activate login tab
+                window.location.href = 'index.html#login';
+            }, 1800);
+        }
+    </script>
+</body>
+</html>

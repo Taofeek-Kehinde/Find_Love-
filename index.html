@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Love - Connect with Singles Worldwide</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff4b8b;
+            --secondary: #ff87ab;
+            --dark: #3a0c3f;
+            --light: #fff9fb;
+            --accent: #a83279;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --gray: #f0f0f0;
+            --text: #333333;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff9fb 0%, #ffeef4 100%);
+            color: var(--text);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .logo i {
+            margin-right: 8px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .logo:hover i {
+            animation: rotate 0.5s ease-in-out;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .find-love-btn,
+        .find-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 75, 139, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        .find-love-btn:hover,
+        .find-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 75, 139, 0.5);
+            animation: bounce 0.6s ease;
+        }
+
+        .find-love-btn:active,
+        .find-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .find-love-btn::before,
+        .find-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .find-love-btn:hover::before,
+        .find-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .mobile-nav.active {
+            display: block;
+        }
+
+        .mobile-nav-content {
+            position: absolute;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            padding: 80px 30px 30px;
+        }
+
+        .mobile-nav.active .mobile-nav-content {
+            right: 0;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav ul li {
+            margin: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .mobile-nav ul li:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav ul li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 18px;
+            display: block;
+            padding: 10px 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .mobile-nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-nav ul li a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .mobile-nav ul li a.active::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .mobile-nav ul li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+
+        .mobile-nav .find-love-btn .find-btn {
+            width: 100%;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 160px 8% 100px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 40px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+        }
+
+        /* Typewriter Effect */
+        #typewriter {
+            display: inline-block;
+            position: relative;
+            color: var(--primary);
+            font-weight: 700;
+            min-width: 200px;
+            /* Reserve space to prevent layout shifts */
+            text-align: left;
+        }
+
+        #typewriter::after {
+            content: '|';
+            color: var(--primary);
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            51%,
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes erasing {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0;
+            }
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            animation: fadeIn 1s ease, slideInRight 1.2s ease;
+        }
+
+        .hero-image-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .circle {
+            width: 100%;
+            padding-top: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(168, 50, 121, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px rgba(168, 50, 121, 0.4);
+        }
+
+        .couple-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: url('./hero.png') center/cover no-repeat;
+            border: 8px solid white;
+            transition: all 0.3s ease;
+        }
+
+        .couple-image:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-weight: 600;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: 80px 8%;
+            background-color: #fff;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ff4b8b;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #777;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            margin: 15px;
+            padding: 30px;
+            text-align: center;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            background: var(--light);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .step.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover .step-icon {
+            transform: rotateY(360deg) scale(1.1);
+            box-shadow: 0 10px 20px rgba(255, 75, 139, 0.3);
+        }
+
+        .step h3 {
+            color: #ff4b8b;
+            margin: 20px 0 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .step p {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Signup/Login Section */
+        .auth-section {
+            padding: 100px 8% 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-image {
+            flex: 1;
+            background: linear-gradient(rgba(168, 50, 121, 0.7), rgba(168, 50, 121, 0.7)), url('https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .auth-image h2 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+        }
+
+        .auth-image p {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        form {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .auth-form-container {
+            flex: 1;
+            padding: 50px;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            color: #ff4b8b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-toggle {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--gray);
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            color: #777;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn.active {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .form-group input {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 75, 139, 0.2);
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: border 0.3s;
+        }
+
+        .form-group select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 75, 139, 0.2);
+        }
+
+        /* Password field with eye icon */
+        .password-field {
+            position: relative;
+        }
+
+        .password-field input {
+            padding-right: 50px;
+            /* Make space for eye icon */
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            font-size: 18px;
+            transition: color 0.3s;
+            user-select: none;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .password-toggle.active {
+            color: var(--primary);
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+        }
+
+        .terms input {
+            margin-top: 5px;
+            margin-right: 10px;
+        }
+
+        .terms label {
+            color: #555;
+        }
+
+        .terms label a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .submit-btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .submit-btn:disabled:hover {
+            background: #ccc;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Custom Alert Modal */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .custom-alert-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-alert-overlay.show .custom-alert {
+            transform: scale(1);
+        }
+
+        .custom-alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .custom-alert-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease;
+        }
+
+        .custom-alert-icon.success {
+            color: #28a745;
+        }
+
+        .custom-alert-icon.error {
+            color: #dc3545;
+        }
+
+        .custom-alert-icon.warning {
+            color: #ffc107;
+        }
+
+        .custom-alert-icon.info {
+            color: #17a2b8;
+        }
+
+        .custom-alert-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .custom-alert-message {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .custom-alert-button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .custom-alert-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.3);
+        }
+
+        .custom-alert-button.secondary {
+            background: #6c757d;
+            margin-left: 10px;
+        }
+
+        .custom-alert-button.secondary:hover {
+            background: #5a6268;
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .custom-alert {
+                padding: 25px 20px;
+                margin: 20px;
+            }
+
+            .custom-alert-icon {
+                font-size: 2.5rem;
+            }
+
+            .custom-alert-title {
+                font-size: 1.3rem;
+            }
+
+            .custom-alert-message {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .custom-alert {
+                padding: 20px 15px;
+                margin: 15px;
+            }
+
+            .custom-alert-button {
+                padding: 10px 25px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 80px 8%;
+            background: var(--light);
+        }
+
+        .testimonial-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .testimonial {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            min-width: 300px;
+            max-width: 320px;
+            position: relative;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .testimonial.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .testimonial:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--primary);
+            opacity: 0.1;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-content {
+            margin-top: 30px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .author-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+            border: 3px solid var(--primary);
+        }
+
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .author-info p {
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 8% 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+
+        .footer-column h3 {
+            color: #ff4b8b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            color: #bbb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-column p {
+            color: #bbb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-3px) scale(1.1) rotate(360deg);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.4);
+        }
+
+        .copyright {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 75, 139, 0.4);
+            }
+
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 75, 139, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 75, 139, 0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 130px;
+            }
+
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 50px;
+            }
+            .hero-content .conect {
+                text-align: left;
+            }
+
+            .auth-container {
+                flex-direction: column;
+            }
+
+            .auth-image {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 5%;
+            }
+
+            /* Show hamburger menu on mobile */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Hide desktop navigation on mobile */
+            nav ul {
+                display: none;
+            }
+
+            .find-love-btn {
+                display: none;
+            }
+
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .step {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .form-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .auth-form-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo"><i class="fas fa-heart"></i> Find Love</a>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="service.html">Services</a></li>
+                <li><a href="Linked.html">Linked Couple</a></li>
+                <li><a href="Contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+        <button class="find-love-btn" id="findLoveBtn">Find Love</button>
+
+        <!-- Hamburger Menu (Mobile Only) -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-content">
+            <ul>
+                <li><a href="index.html" class="mobile-nav-link active">Home</a></li>
+                <li><a href="about.html" class="mobile-nav-link">About Us</a></li>
+                <li><a href="service.html" class="mobile-nav-link">Services</a></li>
+                <li><a href="Linked.html" class="mobile-nav-link">Linked Couple</a></li>
+                <li><a href="Contact.html" class="mobile-nav-link">Contact Us</a></li>
+            </ul>
+            <button class="find-love-btn" id="mobileFindLoveBtn">Find Love</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Find Your Perfect <span id="typewriter">Match</span> Around the World</h1>
+            <p class="conect">Connect with thousands of singles looking for meaningful relationships. Our intelligent matching system
+                helps you find compatible partners based on your interests, values, and personality.</p>
+            <button class="find-btn" id="heroFindLoveBtn">Join Now - It's Free</button>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <h3><span class="counter" data-target="50">0</span>K</h3>
+                    <p>Active Users</p>
+                </div>
+                <div class="stat-item">
+                    <h3><span class="counter" data-target="120">0</span>+</h3>
+                    <p>Countries</p>
+                </div>
+                <div class="stat-item">
+                    <h3><span class="counter" data-target="5000">0</span>K</h3>
+                    <p>Linked Couples</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <div class="hero-image-container">
+                <div class="circle">
+                    <div class="couple-image"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="section-title">
+            <h2>How It Works</h2>
+            <p>Finding your perfect match has never been easier. Just follow these simple steps:</p>
+        </div>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <h3>Create Your Profile</h3>
+                <p>Sign up and create a detailed profile with photos and information about yourself to attract potential
+                    matches.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <h3>Find Matches</h3>
+                <p>Use our advanced search filters to find compatible partners based on location, interests, and
+                    preferences.</p>
+            </div>
+
+            <div class="step">
+                <div class="step-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Connect & Chat</h3>
+                <p>Send messages, start conversations, and build meaningful connections with your matches in real-time.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signup/Login Section -->
+    <section class="auth-section" id="authSection">
+        <div class="auth-container">
+            <div class="auth-image">
+                <h2>Find Your Soulmate Today</h2>
+                <p>Join our community of singles and start your journey to find true love. Thousands of successful
+                    matches made every month!</p>
+            </div>
+
+            <div class="auth-form-container">
+                <div class="form-header">
+                    <h2>Welcome to Find Love</h2>
+                    <p>Create an account or login to find your perfect match</p>
+                </div>
+
+                <div class="form-toggle">
+                    <div class="toggle-btn active" data-form="signup">Sign Up</div>
+                    <div class="toggle-btn" data-form="login">Login</div>
+                </div>
+
+                <!-- Signup Form -->
+                <form id="signupForm" class="auth-form active">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="password-field">
+                            <input type="password" id="password" name="password" placeholder="Create a password"
+                                required>
+                            <i class="fas fa-eye password-toggle" onclick="togglePassword('password')"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <div class="password-field">
+                            <input type="password" id="confirmPassword" name="confirmPassword"
+                                placeholder="Confirm your password" required>
+                            <i class="fas fa-eye password-toggle" onclick="togglePassword('confirmPassword')"></i>
+                        </div>
+                    </div>
+
+                    <div class="terms">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy
+                                Policy</a></label>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="createAccountBtn" onclick="this.disabled=false;">Create
+                        Account</button>
+                </form>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="password-field">
+                            <input type="password" id="loginPassword" name="password" placeholder="Enter your password"
+                                required>
+                            <i class="fas fa-eye password-toggle" onclick="togglePassword('loginPassword')"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Login to Your Account</button>
+
+                    <div class="forgot-password">
+                        <a href="reset.html">Forgot Password?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="section-title">
+            <h2>What Couple Say About Us</h2>
+            <p>Real people who found love through our platform</p>
+        </div>
+
+        <div class="testimonial-container">
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    "After trying several dating apps, I finally found my soulmate on Find Love. The matching algorithm
+                    really understands what I'm looking for in a partner."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="Images/L1.jpg" alt="Mr/Mrs Bimbo Olawale.">
+                    </div>
+                    <div class="author-info">
+                        <h4>Mr/Mrs Bimbo Ola.</h4>
+                        <p>Married for 2 years</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    "I was skeptical at first, but Find Love exceeded all my expectations. I met my fiancé here just 3
+                    months after joining. Couldn't be happier! I love this"
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="Images/L2.jpg" alt="Adelolu Gold.">
+                    </div>
+                    <div class="author-info">
+                        <h4>Adelolu Gold.</h4>
+                        <p>Found love in 2022</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    "The quality of matches on Find Love is outstanding. I appreciate how the platform focuses on
+                    meaningful connections rather than casual dating."
+                </div>
+                <div class="testimonial-author">
+                    <div class="author-image">
+                        <img src="Images/L3.jpg" alt="Oyinkansola J.">
+                    </div>
+                    <div class="author-info">
+                        <h4>Oyinkansola J.</h4>
+                        <p>In a relationship</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Find Love</h3>
+                <p>Connecting singles worldwide since 2020. Our mission is to help you find meaningful relationships
+                    through our innovative matching platform.</p>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/jelilat.taofeek.56"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/ktaofeek015"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="mailto:Ktaofeek015@gmail.com"><i class="fas fa-envelope"></i></a>
+                    <a href="https://www.linkedin.com/in/taofeek-kehinde-438553249/"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="Linked.html">Linked Couple</a></li>
+                    <li><a href="index.html">Blog</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Features</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Advanced Search</a></li>
+                    <li><a href="#">Instant Messaging</a></li>
+                    <li><a href="#">Compatibility Matching</a></li>
+                    <li><a href="#">Premium Membership</a></li>
+                    <li><a href="#">Mobile App</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> Ktaofeek015@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +234 8119 825334 </li>
+                    <li><i class="fas fa-map-marker-alt"></i> Aptech Mokola Ibadan</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2023 Find Love. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <script>
+
+
+     document.querySelectorAll('.find-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    // Use your custom alert
+    showAlert("You're being redirected to our signup page!", "success");
+
+    // Redirect after a small delay so user sees the alert
+    setTimeout(() => {
+      window.location.href = 'index.html#authSection';
+    }, 1200);
+
+    // Close mobile nav if open
+    hamburger.classList.remove('active');
+    mobileNav.classList.remove('active');
+  });
+});
+
+
+        // Typewriter Effect
+        function typewriterEffect() {
+            const element = document.getElementById('typewriter');
+            const words = ['Match', 'Love', 'Partner', 'Date', 'Friend'];
+            let wordIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            let typeSpeed = 150; // Slower typing speed
+            let deleteSpeed = 100; // Slower deleting speed
+            let pauseTime = 2000; // Pause between words
+
+            function type() {
+                const currentWord = words[wordIndex];
+
+                if (isDeleting) {
+                    // Deleting characters
+                    element.textContent = currentWord.substring(0, charIndex - 1);
+                    charIndex--;
+
+                    if (charIndex === 0) {
+                        isDeleting = false;
+                        wordIndex = (wordIndex + 1) % words.length;
+                        setTimeout(type, 500); // Pause before typing next word
+                        return;
+                    }
+                    setTimeout(type, deleteSpeed);
+                } else {
+                    // Typing characters
+                    element.textContent = currentWord.substring(0, charIndex + 1);
+                    charIndex++;
+
+                    if (charIndex === currentWord.length) {
+                        isDeleting = true;
+                        setTimeout(type, pauseTime); // Pause before deleting
+                        return;
+                    }
+                    setTimeout(type, typeSpeed);
+                }
+            }
+
+            // Start the typewriter effect
+            setTimeout(type, 1000); // Initial delay
+        }
+
+        // Start typewriter effect when page loads
+        window.addEventListener('load', typewriterEffect);
+
+        // Image preview function
+        function previewImage(input, previewId) {
+            const file = input.files[0];
+            const preview = document.getElementById(previewId);
+
+            if (file) {
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    showCustomAlert('Invalid File', 'Please select an image file.', 'error');
+                    input.value = '';
+                    return;
+                }
+
+                // Validate file size (5MB max)
+                if (file.size > 5 * 1024 * 1024) {
+                    showCustomAlert('File Too Large', 'Please select an image smaller than 5MB.', 'error');
+                    input.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Preview" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Bio character counter
+        document.addEventListener('DOMContentLoaded', function () {
+            const bioInput = document.getElementById('bio');
+            const bioCounter = document.getElementById('bioCounter');
+
+            if (bioInput && bioCounter) {
+                bioInput.addEventListener('input', function () {
+                    const count = this.value.length;
+                    bioCounter.textContent = `${count}/500 characters`;
+
+                    if (count > 450) {
+                        bioCounter.style.color = '#ff9800';
+                    } else if (count > 480) {
+                        bioCounter.style.color = '#f44336';
+                    } else {
+                        bioCounter.style.color = '#666';
+                    }
+                });
+            }
+        });
+
+        // Custom Alert System
+        function showCustomAlert(title, message, type = 'info', callback = null) {
+            // Remove existing alert if any
+            const existingAlert = document.querySelector('.custom-alert-overlay');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Create alert overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-alert-overlay';
+
+            // Determine icon based on type
+            let icon = '';
+            switch (type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-times-circle"></i>';
+                    break;
+                case 'warning':
+                    icon = '<i class="fas fa-exclamation-triangle"></i>';
+                    break;
+                case 'info':
+                default:
+                    icon = '<i class="fas fa-info-circle"></i>';
+                    break;
+            }
+
+            // Create alert HTML
+            overlay.innerHTML = `
+                <div class="custom-alert">
+                    <div class="custom-alert-icon ${type}">
+                        ${icon}
+                    </div>
+                    <div class="custom-alert-title">${title}</div>
+                    <div class="custom-alert-message">${message}</div>
+                    <button class="custom-alert-button" onclick="closeCustomAlert()">
+                        ${type === 'error' ? 'Try Again' : 'OK'}
+                    </button>
+                </div>
+            `;
+
+            // Add to body
+            document.body.appendChild(overlay);
+
+            // Show with animation
+            setTimeout(() => {
+                overlay.classList.add('show');
+            }, 10);
+
+            // Store callback for later use
+            if (callback) {
+                overlay.setAttribute('data-callback', callback.toString());
+            }
+
+            // Auto close after 5 seconds for success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    closeCustomAlert();
+                }, 5000);
+            }
+        }
+
+        function closeCustomAlert() {
+            const overlay = document.querySelector('.custom-alert-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
+            }
+        }
+
+        // Custom Confirm Dialog
+        function showCustomConfirm(title, message, onConfirm, onCancel = null) {
+            // Remove existing alert if any
+            const existingAlert = document.querySelector('.custom-alert-overlay');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Create alert overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-alert-overlay';
+
+            // Create confirm HTML
+            overlay.innerHTML = `
+                <div class="custom-alert">
+                    <div class="custom-alert-icon warning">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="custom-alert-title">${title}</div>
+                    <div class="custom-alert-message">${message}</div>
+                    <div>
+                        <button class="custom-alert-button" onclick="confirmAction(true)">Yes</button>
+                        <button class="custom-alert-button secondary" onclick="confirmAction(false)">Cancel</button>
+                    </div>
+                </div>
+            `;
+
+            // Add to body
+            document.body.appendChild(overlay);
+
+            // Show with animation
+            setTimeout(() => {
+                overlay.classList.add('show');
+            }, 10);
+
+            // Store callbacks
+            window.customConfirmCallbacks = { onConfirm, onCancel };
+        }
+
+        function confirmAction(confirmed) {
+            if (confirmed && window.customConfirmCallbacks.onConfirm) {
+                window.customConfirmCallbacks.onConfirm();
+            } else if (!confirmed && window.customConfirmCallbacks.onCancel) {
+                window.customConfirmCallbacks.onCancel();
+            }
+            closeCustomAlert();
+        }
+
+        // Password toggle function
+        function togglePassword(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const toggleIcon = passwordField.nextElementSibling;
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+                toggleIcon.classList.add('active');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+                toggleIcon.classList.remove('active');
+            }
+        }
+
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        });
+
+        // Close mobile nav when clicking outside
+        mobileNav.addEventListener('click', (e) => {
+            if (e.target === mobileNav) {
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            }
+        });
+
+        // Close mobile nav when clicking on a link
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            });
+        });
+
+        // Toggle between signup and login forms
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active button
+                document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Show corresponding form
+                const formToShow = btn.getAttribute('data-form');
+                document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+                document.getElementById(`${formToShow}Form`).classList.add('active');
+            });
+        });
+
+        // Scroll to signup section when buttons are clicked
+        document.querySelectorAll('.find-love-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('authSection').scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Close mobile nav if open
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            });
+        });
+
+        // Old form submission handler removed - using the new one with database integration
+
+        // Old login form handler removed - using the new one with database integration
+
+        // Counter Animation Function
+        function animateCounter(element) {
+            const target = parseInt(element.getAttribute('data-target'));
+            const duration = 8000; // 2 seconds
+            const increment = target / (duration / 16); // 60fps
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+
+                // Format the number based on the target value
+                if (target >= 1000) {
+                    element.textContent = Math.floor(current / 1000);
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        // Animation on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+
+                    // If it's a counter element, start the animation
+                    if (entry.target.classList.contains('stats')) {
+                        const counters = entry.target.querySelectorAll('.counter');
+                        counters.forEach(counter => {
+                            animateCounter(counter);
+                        });
+                    }
+
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.step, .testimonial, .stats').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Terms checkbox handler
+        document.getElementById('terms').addEventListener('change', function () {
+            const createBtn = document.getElementById('createAccountBtn');
+            const allFieldsFilled = validateAllFields();
+
+            if (this.checked && allFieldsFilled) {
+                createBtn.disabled = false;
+                createBtn.style.opacity = '1';
+                createBtn.style.cursor = 'pointer';
+            } else {
+                createBtn.disabled = true;
+                createBtn.style.opacity = '0.6';
+                createBtn.style.cursor = 'not-allowed';
+            }
+        });
+
+        // Validate all form fields
+        function validateAllFields() {
+            const requiredFields = ['fullName', 'email', 'password', 'confirmPassword'];
+
+            console.log('=== FIELD VALIDATION ===');
+            for (let fieldId of requiredFields) {
+                const field = document.getElementById(fieldId);
+                const value = field ? field.value.trim() : 'FIELD NOT FOUND';
+                console.log(`${fieldId}: "${value}" - ${value ? '✅' : '❌'}`);
+
+                if (!field || !field.value.trim()) {
+                    console.log(`❌ Validation failed at field: ${fieldId}`);
+                    return false;
+                }
+            }
+
+            // Check if passwords match
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            console.log(`Password match check: ${password === confirmPassword ? '✅' : '❌'}`);
+
+            if (password !== confirmPassword) {
+                console.log('❌ Passwords do not match');
+                return false;
+            }
+
+            console.log('✅ All fields validated successfully');
+            return true;
+        }
+
+        // Add event listeners to all form fields to check validation
+        document.querySelectorAll('#signupForm input, #signupForm select').forEach(field => {
+            field.addEventListener('input', function () {
+                const termsChecked = document.getElementById('terms').checked;
+                const allFieldsFilled = validateAllFields();
+                const createBtn = document.getElementById('createAccountBtn');
+
+                // Check password matching in real-time
+                if (field.id === 'password' || field.id === 'confirmPassword') {
+                    checkPasswordMatch();
+                }
+
+                if (termsChecked && allFieldsFilled) {
+                    createBtn.disabled = false;
+                    createBtn.style.opacity = '1';
+                    createBtn.style.cursor = 'pointer';
+                } else {
+                    createBtn.disabled = true;
+                    createBtn.style.opacity = '0.6';
+                    createBtn.style.cursor = 'not-allowed';
+                }
+            });
+        });
+
+        // Initial button state check
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(() => {
+                const termsChecked = document.getElementById('terms').checked;
+                const allFieldsFilled = validateAllFields();
+                const createBtn = document.getElementById('createAccountBtn');
+
+                if (termsChecked && allFieldsFilled) {
+                    createBtn.disabled = false;
+                    createBtn.style.opacity = '1';
+                    createBtn.style.cursor = 'pointer';
+                } else {
+                    createBtn.disabled = true;
+                    createBtn.style.opacity = '0.6';
+                    createBtn.style.cursor = 'not-allowed';
+                }
+            }, 100);
+        });
+
+
+        function showAlert(message, type = "success") {
+            const alertBox = document.createElement("div");
+            alertBox.textContent = message;
+            alertBox.style.position = "fixed";
+            alertBox.style.top = "20px";
+            alertBox.style.right = "20px";
+            alertBox.style.padding = "15px 20px";
+            alertBox.style.fontFamily = "Poppins, sans-serif";
+            alertBox.style.fontSize = "14px";
+            alertBox.style.fontWeight = "500";
+            alertBox.style.color = "#333";
+            alertBox.style.background = "#fff";
+            alertBox.style.borderLeft = "5px solid " + (type === "error" ? "#f44336" : "#ff4b8b");
+            alertBox.style.borderRadius = "8px";
+            alertBox.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+            alertBox.style.zIndex = "9999";
+            alertBox.style.opacity = "0";
+            alertBox.style.transform = "translateX(100%)";
+            alertBox.style.transition = "all 0.4s ease";
+
+            document.body.appendChild(alertBox);
+
+            requestAnimationFrame(() => {
+                alertBox.style.opacity = "1";
+                alertBox.style.transform = "translateX(0)";
+            });
+
+            setTimeout(() => {
+                alertBox.style.opacity = "0";
+                alertBox.style.transform = "translateX(100%)";
+                setTimeout(() => alertBox.remove(), 400);
+            }, 3000);
+        }
+
+
+
+        // Real-time password matching check
+        function checkPasswordMatch() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const passwordField = document.getElementById('password');
+            const confirmPasswordField = document.getElementById('confirmPassword');
+
+            if (confirmPassword && password !== confirmPassword) {
+                // Passwords don't match - show red border
+                passwordField.style.borderColor = '#dc3545';
+                confirmPasswordField.style.borderColor = '#dc3545';
+                confirmPasswordField.title = 'Passwords do not match!';
+            } else if (confirmPassword && password === confirmPassword) {
+                // Passwords match - show green border
+                passwordField.style.borderColor = '#28a745';
+                confirmPasswordField.style.borderColor = '#28a745';
+                confirmPasswordField.title = 'Passwords match!';
+            } else {
+                // Reset to default
+                passwordField.style.borderColor = '#ddd';
+                confirmPasswordField.style.borderColor = '#ddd';
+                confirmPasswordField.title = '';
+            }
+        }
+
+        // Form submission handlers
+
+        // Signup form submission
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // Double check validation
+            const isValid = validateAllFields();
+            const termsChecked = document.getElementById('terms').checked;
+            if (!isValid) {
+                showCustomAlert('Incomplete Form', 'Please fill in all required fields correctly. Make sure passwords match and all information is provided.', 'warning');
+                return;
+            }
+            if (!termsChecked) {
+                showCustomAlert('Terms Required', 'Please agree to our Terms & Conditions and Privacy Policy to create your account.', 'warning');
+                return;
+            }
+            const formData = new FormData(e.target);
+            const password = formData.get('password');
+            const confirmPassword = formData.get('confirmPassword');
+            if (password !== confirmPassword) {
+                showCustomAlert('Password Mismatch', 'Your passwords do not match. Please make sure both password fields contain the exact same password.', 'error');
+                document.getElementById('password').style.borderColor = '#dc3545';
+                document.getElementById('confirmPassword').style.borderColor = '#dc3545';
+                return;
+            }
+            document.getElementById('password').style.borderColor = '#ddd';
+            document.getElementById('confirmPassword').style.borderColor = '#ddd';
+            const userData = {
+                fullName: formData.get('fullName'),
+                email: formData.get('email'),
+                password: password
+            };
+            // Submit data to server
+            try {
+                const response = await fetch('http://localhost:3001/api/signup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(userData)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    // Store user in localStorage (profileCompleted: false)
+                    localStorage.setItem('user', JSON.stringify({ ...result.user, profileCompleted: false }));
+                    showCustomAlert('Account Created!', `Welcome ${result.user.fullName}! Please complete your profile.`, 'success');
+                    setTimeout(() => {
+                        window.location.href = 'profile-setup.html';
+                    }, 1500);
+                } else {
+                    showCustomAlert('Signup Failed', result.message || 'Unable to create your account. Please check your information and try again.', 'error');
+                }
+            } catch (error) {
+                showCustomAlert('Signup Error', 'An unexpected error occurred while creating your account. Please try again.', 'error');
+            }
+        });
+
+        // Login form submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const loginData = {
+                email: formData.get('email'),
+                password: formData.get('password')
+            };
+            try {
+                const response = await fetch('http://localhost:3001/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginData)
+                });
+                const result = await response.json();
+                if (result.success) {
+                    // Check if profileCompleted is true in user (from DB)
+                    let profileCompleted = false;
+                    if (typeof result.user.profileCompleted !== 'undefined') {
+                        profileCompleted = result.user.profileCompleted;
+                    } else {
+                        // fallback: check localStorage
+                        const localUser = JSON.parse(localStorage.getItem('user') || '{}');
+                        profileCompleted = localUser.profileCompleted || false;
+                    }
+                    // Store user info in localStorage
+                    localStorage.setItem('user', JSON.stringify({ ...result.user, profileCompleted }));
+                    showCustomAlert('Login Successful', `Hello ${result.user.fullName}!`, 'success');
+                    setTimeout(() => {
+                        if (!profileCompleted) {
+                            window.location.href = 'profile-setup.html';
+                        } else {
+                            window.location.href = 'home.html';
+                        }
+                    }, 1200);
+                } else {
+                    if (result.errorType === 'email') {
+                        showCustomAlert('Email Not Found', 'We couldn\'t find an account with this email address. Please check your email or create a new account.', 'error');
+                        document.getElementById('loginEmail').style.borderColor = '#dc3545';
+                        document.getElementById('loginPassword').style.borderColor = '#ddd';
+                    } else if (result.errorType === 'password') {
+                        showCustomAlert('Incorrect Password', 'The password you entered is incorrect. Please check your password and try again.', 'error');
+                        document.getElementById('loginEmail').style.borderColor = '#28a745';
+                        document.getElementById('loginPassword').style.borderColor = '#dc3545';
+                    } else {
+                        showCustomAlert('Login Failed', result.message || 'Unable to log you in. Please check your credentials and try again.', 'error');
+                        document.getElementById('loginEmail').style.borderColor = '#dc3545';
+                        document.getElementById('loginPassword').style.borderColor = '#dc3545';
+                    }
+                }
+            } catch (error) {
+                showCustomAlert('Login Error', 'An unexpected error occurred during login. Please check your connection and try again.', 'error');
+            }
+        });
+    </script>
+</body>
+
+</html>

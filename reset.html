@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - Find Love</title>
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff4b8b;
+            --secondary: #ff87ab;
+            --dark: #3a0c3f;
+            --light: #fff9fb;
+            --accent: #a83279;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --gray: #f0f0f0;
+            --text: #333333;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff9fb 0%, #ffeef4 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .reset-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reset-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .reset-header h1 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .reset-header p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 75, 139, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 75, 139, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .back-link {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-link a:hover {
+            color: var(--accent);
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .loading i {
+            animation: spin 1s linear infinite;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        /* Custom Alert Modal */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .custom-alert-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-alert-overlay.show .custom-alert {
+            transform: scale(1);
+        }
+
+        .custom-alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .custom-alert-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease;
+        }
+
+        .custom-alert-icon.success { color: #28a745; }
+        .custom-alert-icon.error { color: #dc3545; }
+        .custom-alert-icon.warning { color: #ffc107; }
+        .custom-alert-icon.info { color: #17a2b8; }
+
+        .custom-alert-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .custom-alert-message {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .custom-alert-button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .custom-alert-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.3);
+        }
+
+        /* Animations */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .reset-container {
+                padding: 30px 25px;
+                margin: 10px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .reset-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .reset-header p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .reset-container {
+                padding: 25px 20px;
+            }
+            
+            .form-group input {
+                padding: 12px;
+            }
+            
+            .submit-btn {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reset-container">
+        <div class="logo">
+            <i class="fas fa-heart"></i>
+            Find Love
+        </div>
+        
+        <div class="reset-header">
+            <h1>Reset Your Password</h1>
+            <p>Enter your email address and we'll send you a link to reset your password.</p>
+        </div>
+        
+        <form id="resetForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="resetBtn">
+                <i class="fas fa-paper-plane"></i> Send Reset Link
+            </button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner"></i>
+            <p>Sending reset email...</p>
+        </div>
+        
+        <div class="back-link">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Login</a>
+        </div>
+    </div>
+
+    <script>
+        // Custom Alert System
+        function showCustomAlert(title, message, type = 'info', callback = null) {
+            const existingAlert = document.querySelector('.custom-alert-overlay');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-alert-overlay';
+
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-times-circle"></i>';
+                    break;
+                case 'warning':
+                    icon = '<i class="fas fa-exclamation-triangle"></i>';
+                    break;
+                case 'info':
+                default:
+                    icon = '<i class="fas fa-info-circle"></i>';
+                    break;
+            }
+
+            overlay.innerHTML = `
+                <div class="custom-alert">
+                    <div class="custom-alert-icon ${type}">
+                        ${icon}
+                    </div>
+                    <div class="custom-alert-title">${title}</div>
+                    <div class="custom-alert-message">${message}</div>
+                    <button class="custom-alert-button" onclick="closeCustomAlert()">
+                        ${type === 'error' ? 'Try Again' : 'OK'}
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                overlay.classList.add('show');
+            }, 10);
+
+            if (callback) {
+                overlay.setAttribute('data-callback', callback.toString());
+            }
+        }
+
+        function closeCustomAlert() {
+            const overlay = document.querySelector('.custom-alert-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
+            }
+        }
+
+        // Form submission
+        document.getElementById('resetForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const resetBtn = document.getElementById('resetBtn');
+            const loading = document.getElementById('loading');
+            
+            if (!email) {
+                showCustomAlert(
+                    'Email Required', 
+                    'Please enter your email address to reset your password.', 
+                    'warning'
+                );
+                return;
+            }
+
+            // Show loading
+            resetBtn.disabled = true;
+            resetBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('http://localhost:3001/api/reset-password', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Show the code directly on screen
+                    showCustomAlert(
+                        'Reset Code Generated!',
+                        `Your 6-digit reset code is: <br><br><strong style="font-size: 2rem; color: #ff4b8b; letter-spacing: 3px;">${result.resetCode}</strong><br><br>Copy this code and click OK to continue.`,
+                        'success'
+                    );
+                    document.getElementById('resetForm').reset();
+
+                    // Store the code for the next step
+                    localStorage.setItem('resetCode', result.resetCode);
+                    localStorage.setItem('resetEmail', result.email);
+
+                    // Redirect to verify page after user clicks OK
+                    setTimeout(() => {
+                        window.location.href = 'verify.html';
+                    }, 5000);
+                } else {
+                    showCustomAlert(
+                        'Reset Failed', 
+                        result.message || 'Unable to send reset email. Please try again.', 
+                        'error'
+                    );
+                }
+            } catch (error) {
+                console.error('Reset error:', error);
+                showCustomAlert(
+                    'Connection Error', 
+                    'Unable to connect to the server. Please check your connection and try again.', 
+                    'error'
+                );
+            } finally {
+                // Hide loading
+                resetBtn.disabled = false;
+                resetBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Reset Link';
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linked Couples - Find Love Success Stories</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff4b8b;
+            --secondary: #ff87ab;
+            --dark: #3a0c3f;
+            --light: #fff9fb;
+            --accent: #a83279;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --gray: #f0f0f0;
+            --text: #333333;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff9fb 0%, #ffeef4 100%);
+            color: var(--text);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .logo i {
+            margin-right: 8px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .logo:hover i {
+            animation: rotate 0.5s ease-in-out;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .find-love-btn, .find-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 75, 139, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        .find-love-btn:hover, .find-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 75, 139, 0.5);
+            animation: bounce 0.6s ease;
+        }
+
+        .find-love-btn:active, .find-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .find-love-btn::before, .find-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .find-love-btn:hover::before, .find-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .mobile-nav.active {
+            display: block;
+        }
+
+        .mobile-nav-content {
+            position: absolute;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            padding: 80px 30px 30px;
+        }
+
+        .mobile-nav.active .mobile-nav-content {
+            right: 0;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav ul li {
+            margin: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .mobile-nav ul li:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav ul li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 18px;
+            display: block;
+            padding: 10px 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .mobile-nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-nav ul li a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .mobile-nav ul li a.active::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .mobile-nav ul li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+
+        .mobile-nav .find-love-btn .find-btn{
+            width: 100%;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        /* Linked Couples Hero */
+        .linked-hero {
+            padding: 160px 8% 80px;
+            text-align: center;
+            background:
+                linear-gradient(rgba(255, 249, 251, 0.9), rgba(255, 249, 251, 0.9)),
+                url("images/bg.png");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .linked-hero h1 {
+            font-size: 3.5rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Dancing Script', cursive;
+            margin-bottom: 20px;
+        }
+
+        .linked-hero h1 span {
+            color: var(--primary);
+        }
+
+        .linked-hero p {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        /* Stats Banner */
+        .stats-banner {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 30px 8%;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            padding: 15px;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 1.1rem;
+        }
+
+        /* Couples Grid */
+        .couples-section {
+            padding: 60px 8% 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .couples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .couple-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .couple-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(168, 50, 121, 0.2);
+        }
+
+        .couple-header {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .couple-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .couple-card:hover .couple-header img {
+            transform: scale(1.1);
+        }
+
+        .couple-names {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            color: #ddd;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .couple-names h3 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .couple-names p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .couple-body {
+            padding: 25px;
+        }
+
+        .couple-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .couple-stat {
+            text-align: center;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .couple-stat i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .couple-stat span {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .couple-story {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .couple-story::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 0;
+            font-size: 4rem;
+            color: var(--primary);
+            opacity: 0.2;
+            font-family: Georgia, serif;
+        }
+
+        .couple-review {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+            margin-top: 20px;
+        }
+
+        .couple-review p {
+            font-style: italic;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+
+        .review-author {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .author-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 10px;
+            border: 2px solid var(--primary);
+        }
+
+        .author-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info h4 {
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .author-info p {
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        /* Featured Couple */
+.featured-couple {
+  max-width: 1200px;
+  margin: 80px auto;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.featured-image {
+  flex: 1;
+  min-width: 300px;
+  height: 600px;
+}
+
+.featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featured-content {
+  flex: 1;
+  min-width: 300px;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.featured-content h2 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.featured-content h3 {
+  color: var(--primary);
+  margin-bottom: 30px;
+  font-size: 1.4rem;
+}
+
+.featured-content p {
+  color: #2c3e50;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+.featured-stats {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0 30px;
+}
+
+.featured-stat {
+  text-align: center;
+  padding: 15px;
+  background: var(--light);
+  border-radius: 10px;
+  flex: 1;
+}
+
+.featured-stat h4 {
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+
+/* 🔹 Responsive Fixes */
+@media (max-width: 992px) {
+  .featured-couple {
+    flex-direction: column;
+  }
+
+  .featured-image {
+    height: 400px;
+  }
+
+  .featured-content {
+    padding: 30px 20px;
+    text-align: left;
+  }
+
+  .featured-stats {
+    flex-direction: column;
+  }
+
+  .featured-stat {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .featured-image {
+    height: 250px;
+  }
+
+  .featured-content h2 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .featured-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .featured-content p {
+    font-size: 0.95rem;
+  }
+
+  .featured-stat h4 {
+    font-size: 1.5rem;
+  }
+}
+
+        /* CTA Section */
+        .cta-section {
+            position: relative;
+            padding: 100px 8%;
+            text-align: center;
+            overflow: hidden;
+            background: none;
+        }
+
+        .cta-section video.bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .cta-container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .cta-container h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .cta-container p {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: #ff4b8b;
+            padding: 60px 8% 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+
+        .footer-column h3 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+            color: #bbb;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-column p {
+            color: #bbb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-3px) scale(1.1) rotate(360deg);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.4);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 75, 139, 0.4);
+            }
+
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 75, 139, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 75, 139, 0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .featured-couple {
+                flex-direction: column;
+            }
+
+            .featured-image {
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 5%;
+            }
+
+            /* Show hamburger menu on mobile */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Hide desktop navigation on mobile */
+            nav ul {
+                display: none;
+            }
+
+            .find-love-btn {
+                display: none;
+            }
+
+            .linked-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .couples-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        .find-love-bx  {
+  display: inline-block;
+  margin: 20px auto;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--secondary);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 10; /* make sure it's above overlays */
+}
+
+.find-love-bx:hover {
+  background: var(--primary);
+  transform: scale(1.05);
+}
+
+/* Responsive fix */
+@media (max-width: 768px) {
+  .find-love-bx  {
+    display: block;
+    width: 90%;   /* full width for small screens */
+    font-size: 1.1rem;
+    padding: 16px;
+    margin: 15px auto;
+  }
+}
+
+
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a href="index.html" class="logo"><i class="fas fa-heart"></i> Find Love</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="service.html">Services</a></li>
+                <li><a href="Linked.html" class="active">Linked Couple</a></li>
+                <li><a href="Contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+        <button class="find-love-btn" id="findLoveBtn">Find Love</button>
+
+        <!-- Hamburger Menu (Mobile Only) -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-content">
+            <ul>
+                <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                <li><a href="about.html" class="mobile-nav-link">About Us</a></li>
+                <li><a href="service.html" class="mobile-nav-link">Services</a></li>
+                <li><a href="Linked.html" class="mobile-nav-link active">Linked Couple</a></li>
+                <li><a href="Contact.html" class="mobile-nav-link">Contact Us</a></li>
+            </ul>
+            <button class="find-love-btn" id="mobileFindLoveBtn">Find Love</button>
+        </div>
+    </div>
+
+    <!-- Linked Couples Hero Section -->
+    <section class="linked-hero">
+        <h1>Our <span>Linked Couple</span></h1>
+        <p>Discover real couples who found true love <span style="color: #ff4b8b;">through Find Love</span> . These
+            heartwarming stories show how our platform brings people together from <span style="color: #ff4b8b;">around
+            </span> the world.</p>
+        <button class="find-btn" id="heroFindLoveBtn">Share Your Story</button>
+    </section>
+
+    <!-- Stats Banner -->
+    <section class="stats-banner">
+        <div class="stats-container">
+            <div class="stat-item">
+                <h3 data-target="500" data-suffix="K">0</h3>
+                <p>Happy Couples</p>
+            </div>
+            <div class="stat-item">
+                <h3 data-target="120" data-suffix="+">0</h3>
+                <p>Countries Connected</p>
+            </div>
+            <div class="stat-item">
+                <h3 data-target="250" data-suffix="K">0</h3>
+                <p>Weddings This Year</p>
+            </div>
+            <div class="stat-item">
+                <h3 data-target="99" data-suffix="%">0</h3>
+                <p>Success Rate</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Couples Grid Section -->
+    <section class="couples-section">
+        <div class="section-title">
+            <h2>Featured Love Stories</h2>
+            <p>Real couples who found their perfect match on Find Love</p>
+        </div>
+
+        <div class="couples-grid">
+            <!-- Couple 1 -->
+            <div class="couple-card">
+                <div class="couple-header">
+                    <img src="Images/c1.png" alt="Sarah & Michael">
+                    <div class="couple-names">
+                        <h3>Sarah & Michael</h3>
+                        <p>Married 2 Years | New York & London</p>
+                    </div>
+                </div>
+                <div class="couple-body">
+                    <div class="couple-stats">
+                        <div class="couple-stat">
+                            <i class="fas fa-globe-americas"></i>
+                            <span>8,000 miles</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-heart"></i>
+                            <span>6 months</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-ring"></i>
+                            <span>Married</span>
+                        </div>
+                    </div>
+
+                    <div class="couple-story">
+                        "We connected during lockdown when international travel was impossible. Our daily video calls
+                        turned into a deep connection that neither of us expected. When we finally met in person, we
+                        knew it was forever."
+                    </div>
+
+                    <div class="couple-review">
+                        <p>"Find Love helped us overcome distance and cultural differences. We're proof that true love
+                            knows no borders!"</p>
+                        <div class="review-author">
+                            <div class="author-image">
+                                <img src="Images/c1.png" alt="Sarah">
+                            </div>
+                            <div class="author-info">
+                                <h4>Sarah K.</h4>
+                                <p>Marketing Director</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Couple 2 -->
+            <div class="couple-card">
+                <div class="couple-header">
+                    <img src="Images/c2.png" alt="Emma & James">
+                    <div class="couple-names">
+                        <h3>Emma & James</h3>
+                        <p>Engaged | Sydney & Toronto</p>
+                    </div>
+                </div>
+                <div class="couple-body">
+                    <div class="couple-stats">
+                        <div class="couple-stat">
+                            <i class="fas fa-globe-americas"></i>
+                            <span>9,500 miles</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-heart"></i>
+                            <span>8 months</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-gem"></i>
+                            <span>Engaged</span>
+                        </div>
+                    </div>
+
+                    <div class="couple-story">
+                        "We matched on Find Love when James was visiting Sydney for work. We spent one magical week
+                        together before he returned to Canada. The distance was challenging, but our connection grew
+                        stronger with each conversation."
+                    </div>
+
+                    <div class="couple-review">
+                        <p>"The compatibility matching system brought us together - we share the same values, humor, and
+                            life goals. We're getting married next spring!"</p>
+                        <div class="review-author">
+                            <div class="author-image">
+                                <img src="Images/c2.png" alt="James">
+                            </div>
+                            <div class="author-info">
+                                <h4>James T.</h4>
+                                <p>Software Engineer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Couple 3 -->
+            <div class="couple-card">
+                <div class="couple-header">
+                    <img src="Images/c3.png" alt="Priya & David">
+                    <div class="couple-names">
+                        <h3>Priya & David</h3>
+                        <p>Together 3 Years | Mumbai & Berlin</p>
+                    </div>
+                </div>
+                <div class="couple-body">
+                    <div class="couple-stats">
+                        <div class="couple-stat">
+                            <i class="fas fa-globe-americas"></i>
+                            <span>4,200 miles</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-heart"></i>
+                            <span>3 years</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-home"></i>
+                            <span>Living Together</span>
+                        </div>
+                    </div>
+
+                    <div class="couple-story">
+                        "Our first conversation lasted 6 hours! We discovered shared passions for travel, photography,
+                        and Indian cuisine. David moved to Mumbai last year, and we've been exploring India together
+                        ever since."
+                    </div>
+
+                    <div class="couple-review">
+                        <p>"Find Love's detailed profiles helped us discover our common interests before we even started
+                            chatting. It felt like we already knew each other!"</p>
+                        <div class="review-author">
+                            <div class="author-image">
+                                <img src="Images/c3.png" alt="Priya">
+                            </div>
+                            <div class="author-info">
+                                <h4>Priya S.</h4>
+                                <p>Photographer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Couple 4 -->
+            <div class="couple-card">
+                <div class="couple-header">
+                    <img src="Images/c4.png" alt="Maria & Carlos">
+                    <div class="couple-names">
+                        <h3>Maria & Carlos</h3>
+                        <p>Newlyweds | Rio de Janeiro & Madrid</p>
+                    </div>
+                </div>
+                <div class="couple-body">
+                    <div class="couple-stats">
+                        <div class="couple-stat">
+                            <i class="fas fa-globe-americas"></i>
+                            <span>5,000 miles</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-heart"></i>
+                            <span>1 year</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-baby"></i>
+                            <span>Expecting</span>
+                        </div>
+                    </div>
+
+                    <div class="couple-story">
+                        "We met on Find Love just before Carnival. Carlos flew to Rio to meet me, and we danced samba
+                        together in the streets. Six months later, he proposed at Christ the Redeemer. We married last
+                        month and are expecting our first child!"
+                    </div>
+
+                    <div class="couple-review">
+                        <p>"The cultural exchange feature helped us appreciate our differences. We're creating a
+                            beautiful Brazilian-Spanish family thanks to Find Love!"</p>
+                        <div class="review-author">
+                            <div class="author-image">
+                                <img src="Images/c4.png" alt="Maria">
+                            </div>
+                            <div class="author-info">
+                                <h4>Maria R.</h4>
+                                <p>Dance Instructor</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Couple 5 -->
+            <div class="couple-card">
+                <div class="couple-header">
+                    <img src="Images/c5.png" alt="Ling & Kenji">
+                    <div class="couple-names">
+                        <h3>Ling & Kenji</h3>
+                        <p>Married 5 Years | Shanghai & Tokyo</p>
+                    </div>
+                </div>
+                <div class="couple-body">
+                    <div class="couple-stats">
+                        <div class="couple-stat">
+                            <i class="fas fa-globe-americas"></i>
+                            <span>1,100 miles</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-heart"></i>
+                            <span>6 years</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-users"></i>
+                            <span>Family of 4</span>
+                        </div>
+                    </div>
+
+                    <div class="couple-story">
+                        "We connected over our shared love of anime and traditional tea ceremonies. Despite language
+                        barriers, we communicated through the app's translation feature. We now have two beautiful
+                        children and run a tea business together."
+                    </div>
+
+                    <div class="couple-review">
+                        <p>"Find Love made cross-cultural dating easy. The translation tools helped us understand each
+                            other deeply before we learned each other's languages."</p>
+                        <div class="review-author">
+                            <div class="author-image">
+                                <img src="Images/c5.png" alt="Kenji">
+                            </div>
+                            <div class="author-info">
+                                <h4>Kenji T.</h4>
+                                <p>Tea Business Owner</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Couple 6 -->
+            <div class="couple-card">
+                <div class="couple-header">
+                    <img src="Images/c6.png" alt="Fatima & Amir">
+                    <div class="couple-names">
+                        <h3>Fatima & Amir</h3>
+                        <p>Newly Engaged | Cairo & Dubai</p>
+                    </div>
+                </div>
+                <div class="couple-body">
+                    <div class="couple-stats">
+                        <div class="couple-stat">
+                            <i class="fas fa-globe-americas"></i>
+                            <span>1,800 miles</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-heart"></i>
+                            <span>9 months</span>
+                        </div>
+                        <div class="couple-stat">
+                            <i class="fas fa-gem"></i>
+                            <span>Engaged</span>
+                        </div>
+                    </div>
+
+                    <div class="couple-story">
+                        "Amir sent me a thoughtful message about my poetry blog. We discovered shared values and family
+                        traditions. When we met in person, our families immediately connected. We're planning our
+                        wedding for next year!"
+                    </div>
+
+                    <div class="couple-review">
+                        <p>"The family values filter helped us find each other. Find Love understands what really
+                            matters in long-term relationships They are the best so far I like their sevices Kindly
+                            contact them today for the best."</p>
+                        <div class="review-author">
+                            <div class="author-image">
+                                <img src="Images/c6.png" alt="Fatima">
+                            </div>
+                            <div class="author-info">
+                                <h4>Fatima A.</h4>
+                                <p>Poet & Teacher</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Couple -->
+    <section class="featured-couple">
+        <div class="featured-image">
+            <img src="Images/profile.png" alt="Featured Couple">
+        </div>
+        <div class="featured-content">
+            <h2>Our Featured Love Story</h2>
+            <h3>Sophie & Marcus - Paris & New York</h3>
+            <p>Sophie and Marcus were matched by our algorithm despite living on different continents. Their first
+                conversation lasted until sunrise, and they knew they had found something special.</p>
+            <p>"We spent six months video chatting every day. When Marcus finally visited Paris, he proposed at the
+                Eiffel Tower. We now split our time between Paris and New York, embracing the best of both worlds."</p>
+
+            <div class="featured-stats">
+                <div class="featured-stat">
+                    <h4>6</h4>
+                    <p>Months Dating</p>
+                </div>
+                <div class="featured-stat">
+                    <h4>3,600</h4>
+                    <p>Miles Apart</p>
+                </div>
+                <div class="featured-stat">
+                    <h4>1</h4>
+                    <p>Beautiful Wedding</p>
+                </div>
+            </div>
+
+            <button class="find-btn" onclick="window.location.href='story.html'">
+                Read Full Story
+            </button>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <video class="bg-video" autoplay muted loop playsinline>
+            <source src="Images/vid.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="cta-container">
+            <h2>Ready to Find Your Match?</h2>
+            <p>Join thousands of singles who have found meaningful relationships through Find Love. Our intelligent
+                matching system connects you with compatible partners based on your values, interests, and personality.
+            </p>
+            <button class="find-btn">Sign Up Now !! </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Find Love</h3>
+                <p>Connecting singles worldwide since 2020. Our mission is to help you find meaningful relationships
+                    through our innovative matching platform.</p>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/jelilat.taofeek.56"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/ktaofeek015"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.youtube.com/@taofeekkehinde3143"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.linkedin.com/in/taofeek-kehinde-438553249/"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Features</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Advanced Search</a></li>
+                    <li><a href="#">Instant Messaging</a></li>
+                    <li><a href="#">Compatibility Matching</a></li>
+                    <li><a href="#">Premium Membership</a></li>
+                    <li><a href="#">Mobile App</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> Ktaofeek015@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +234 8119 825334 </li>
+                    <li><i class="fas fa-map-marker-alt"></i> Aptech Mokola Ibadan</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2023 Find Love. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        });
+
+        // Close mobile nav when clicking outside
+        mobileNav.addEventListener('click', (e) => {
+            if (e.target === mobileNav) {
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            }
+        });
+
+        // Close mobile nav when clicking on a link
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            });
+        });
+
+        // Scroll to signup section when buttons are clicked
+         document.querySelectorAll('.find-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                // Use your custom alert
+                showAlert("You're being redirected to our signup page!", "success");
+
+ 
+                setTimeout(() => {
+                    window.location.href = 'index.html#authSection';
+                }, 1200);
+
+                // Close mobile nav if open
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            });
+        });
+
+
+        function showAlert(message, type = "success") {
+            const alertBox = document.createElement("div");
+            alertBox.textContent = message;
+            alertBox.style.position = "fixed";
+            alertBox.style.top = "20px";
+            alertBox.style.right = "20px";
+            alertBox.style.padding = "15px 20px";
+            alertBox.style.fontFamily = "Poppins, sans-serif";
+            alertBox.style.fontSize = "14px";
+            alertBox.style.fontWeight = "500";
+            alertBox.style.color = "#333";
+            alertBox.style.background = "#fff";
+            alertBox.style.borderLeft = "5px solid " + (type === "error" ? "#f44336" : "#ff4b8b");
+            alertBox.style.borderRadius = "8px";
+            alertBox.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+            alertBox.style.zIndex = "9999";
+            alertBox.style.opacity = "0";
+            alertBox.style.transform = "translateX(100%)";
+            alertBox.style.transition = "all 0.4s ease";
+
+            document.body.appendChild(alertBox);
+
+            requestAnimationFrame(() => {
+                alertBox.style.opacity = "1";
+                alertBox.style.transform = "translateX(0)";
+            });
+
+            setTimeout(() => {
+                alertBox.style.opacity = "0";
+                alertBox.style.transform = "translateX(100%)";
+                setTimeout(() => alertBox.remove(), 400);
+            }, 3000);
+        }
+        
+        // Animation on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.couple-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        const counters = document.querySelectorAll('.stat-item h3');
+
+        counters.forEach(counter => {
+            const target = +counter.getAttribute('data-target');
+            const suffix = counter.getAttribute('data-suffix') || '';
+            let count = 0;
+
+            const updateCount = () => {
+                const speed = target / 900; // adjust speed
+                if (count < target) {
+                    count += speed;
+                    counter.textContent = Math.ceil(count).toLocaleString() + suffix;
+                    requestAnimationFrame(updateCount);
+                } else {
+                    counter.textContent = target.toLocaleString() + suffix; // final value
+                }
+            };
+
+            updateCount();
+        });
+    </script>
+</body>
+
+</html>

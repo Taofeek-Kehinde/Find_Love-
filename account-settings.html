@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - FindLove</title>
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff4b8b;
+            --secondary: #ff87ab;
+            --dark: #3a0c3f;
+            --light: #fff9fb;
+            --accent: #a83279;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --gray: #f0f0f0;
+            --text: #333333;
+            --white: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff9fb 0%, #ffeef4 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .header h1 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .settings-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid var(--gray);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .setting-item:hover {
+            border-color: var(--primary);
+            background: rgba(255, 75, 139, 0.05);
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-info h3 {
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .setting-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .setting-action {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(0.7);
+            transition: transform 0.3s;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .modal-icon.warning { color: var(--warning); }
+        .modal-icon.danger { color: var(--danger); }
+
+        .modal h2 {
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--gray);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: var(--white);
+            border: 2px solid var(--gray);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* Custom Alert Modal */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .custom-alert-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-alert-overlay.show .custom-alert {
+            transform: scale(1);
+        }
+
+        .custom-alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .custom-alert-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease;
+        }
+
+        .custom-alert-icon.success { color: #28a745; }
+        .custom-alert-icon.error { color: #dc3545; }
+        .custom-alert-icon.warning { color: #ffc107; }
+        .custom-alert-icon.info { color: #17a2b8; }
+
+        .custom-alert-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .custom-alert-message {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .custom-alert-button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .custom-alert-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.3);
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .settings-section {
+                padding: 20px;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .setting-action {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .modal-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="home.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-cog"></i> Account Settings</h1>
+            <p>Manage your account preferences and security</p>
+        </div>
+
+        <div class="settings-section">
+            <h2 class="section-title">
+                <i class="fas fa-shield-alt"></i>
+                Account Management
+            </h2>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Deactivate Account</h3>
+                    <p>Temporarily disable your account. You can reactivate it anytime by logging back in.</p>
+                </div>
+                <div class="setting-action">
+                    <button class="btn btn-warning" onclick="showDeactivateModal()">
+                        <i class="fas fa-pause"></i> Deactivate
+                    </button>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Delete Account</h3>
+                    <p>Permanently delete your account and all associated data. This action cannot be undone.</p>
+                </div>
+                <div class="setting-action">
+                    <button class="btn btn-danger" onclick="showDeleteModal()">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h2 class="section-title">
+                <i class="fas fa-lock"></i>
+                Security
+            </h2>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Change Password</h3>
+                    <p>Update your password to keep your account secure</p>
+                </div>
+                <div class="setting-action">
+                    <button class="btn btn-primary" onclick="showChangePasswordModal()">
+                        <i class="fas fa-key"></i> Change
+                    </button>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Change Email</h3>
+                    <p>Update your email address</p>
+                </div>
+                <div class="setting-action">
+                    <button class="btn btn-primary" onclick="showChangeEmailModal()">
+                        <i class="fas fa-envelope"></i> Change
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deactivate Modal -->
+    <div class="modal" id="deactivateModal">
+        <div class="modal-content">
+            <div class="modal-icon warning">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2>Deactivate Account</h2>
+            <p>Are you sure you want to deactivate your account? Your profile will be hidden from other users, but your data will be preserved. You can reactivate your account anytime by logging back in.</p>
+            <div style="margin-bottom: 20px;">
+                <input type="password" id="deactivatePassword" class="password-input" placeholder="Enter your password to confirm">
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('deactivateModal')">Cancel</button>
+                <button class="btn btn-warning" onclick="deactivateAccount()">
+                    <i class="fas fa-pause"></i> Deactivate Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-icon danger">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2>Delete Account</h2>
+            <p><strong>Warning:</strong> This action cannot be undone. Your account and all associated data will be permanently deleted.</p>
+            <p style="margin-top: 10px;">Type "DELETE" to confirm:</p>
+            <div style="margin-bottom: 20px;">
+                <input type="text" id="deleteConfirm" class="password-input" placeholder="Type DELETE to confirm">
+                <input type="password" id="deletePassword" class="password-input" placeholder="Enter your password">
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('deleteModal')">Cancel</button>
+                <button class="btn btn-danger" onclick="deleteAccount()">
+                    <i class="fas fa-trash"></i> Delete Account
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-key"></i>
+            </div>
+            <h2>Change Password</h2>
+            <div style="text-align: left; margin-bottom: 20px;">
+                <input type="password" id="currentPassword" class="password-input" placeholder="Current password">
+                <input type="password" id="newPassword" class="password-input" placeholder="New password">
+                <input type="password" id="confirmNewPassword" class="password-input" placeholder="Confirm new password">
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('changePasswordModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="changePassword()">
+                    <i class="fas fa-save"></i> Update Password
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Email Modal -->
+    <div class="modal" id="changeEmailModal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <h2>Change Email</h2>
+            <div style="text-align: left; margin-bottom: 20px;">
+                <input type="email" id="newEmail" class="password-input" placeholder="New email address">
+                <input type="password" id="emailPassword" class="password-input" placeholder="Current password">
+            </div>
+            <div class="modal-actions">
+                <button class="btn" onclick="closeModal('changeEmailModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="changeEmail()">
+                    <i class="fas fa-save"></i> Update Email
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div class="custom-alert-overlay" id="customAlertOverlay">
+        <div class="custom-alert">
+            <div class="custom-alert-icon" id="customAlertIcon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2 class="custom-alert-title" id="customAlertTitle">Success</h2>
+            <p class="custom-alert-message" id="customAlertMessage">Operation completed successfully.</p>
+            <button class="custom-alert-button" onclick="closeCustomAlert()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const user = localStorage.getItem('user');
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+        });
+
+        // Modal functions
+        function showDeactivateModal() {
+            document.getElementById('deactivateModal').classList.add('show');
+        }
+
+        function showDeleteModal() {
+            document.getElementById('deleteModal').classList.add('show');
+        }
+
+        function showChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.add('show');
+        }
+
+        function showChangeEmailModal() {
+            document.getElementById('changeEmailModal').classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+            // Clear inputs
+            const modal = document.getElementById(modalId);
+            const inputs = modal.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+        }
+
+        // Account actions
+        async function deactivateAccount() {
+            const password = document.getElementById('deactivatePassword').value;
+            if (!password) {
+                alert('Please enter your password');
+                return;
+            }
+
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user?.id || user?._id;
+
+                const response = await fetch('http://localhost:3001/api/deactivate-account', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showCustomAlert('success', 'Account Deactivated', 'Your account has been deactivated successfully. You will be logged out.');
+                    setTimeout(() => {
+                        logout();
+                    }, 2000);
+                } else {
+                    showCustomAlert('error', 'Deactivation Failed', data.message);
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+            }
+        }
+
+        async function deleteAccount() {
+            const confirmText = document.getElementById('deleteConfirm').value;
+            const password = document.getElementById('deletePassword').value;
+
+            if (confirmText !== 'DELETE') {
+                showCustomAlert('warning', 'Confirmation Required', 'Please type "DELETE" to confirm');
+                return;
+            }
+
+            if (!password) {
+                showCustomAlert('warning', 'Password Required', 'Please enter your password');
+                return;
+            }
+
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user?.id || user?._id;
+
+                const response = await fetch('http://localhost:3001/api/delete-account', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showCustomAlert('success', 'Account Deleted', 'Your account has been deleted successfully. You will be logged out.');
+                    setTimeout(() => {
+                        logout();
+                    }, 2000);
+                } else {
+                    showCustomAlert('error', 'Deletion Failed', data.message);
+                }
+            } catch (error) {
+                showCustomAlert('error', 'Network Error', 'Network error. Please try again.');
+            }
+        }
+
+        async function changePassword() {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showCustomAlert('warning', 'Fields Required', 'Please fill in all fields');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showCustomAlert('warning', 'Password Mismatch', 'New passwords do not match');
+                return;
+            }
+
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user?.id || user?._id;
+
+                const response = await fetch('http://localhost:3001/api/change-password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, currentPassword, newPassword })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showCustomAlert('success', 'Password Changed', 'Your password has been changed successfully');
+                    setTimeout(() => {
+                        closeModal('changePasswordModal');
+                    }, 2000);
+                } else {
+                    showCustomAlert('error', 'Change Failed', data.message);
+                }
+            } catch (error) {
+                showCustomAlert('error', 'Network Error', 'Network error. Please try again.');
+            }
+        }
+
+        async function changeEmail() {
+            const newEmail = document.getElementById('newEmail').value;
+            const password = document.getElementById('emailPassword').value;
+
+            if (!newEmail || !password) {
+                showCustomAlert('warning', 'Fields Required', 'Please fill in all fields');
+                return;
+            }
+
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userId = user?.id || user?._id;
+
+                const response = await fetch('http://localhost:3001/api/change-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, newEmail, password })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showCustomAlert('success', 'Email Changed', 'Your email has been changed successfully. Please login with your new email.');
+                    setTimeout(() => {
+                        logout();
+                    }, 2000);
+                } else {
+                    showCustomAlert('error', 'Change Failed', data.message);
+                }
+            } catch (error) {
+                showCustomAlert('error', 'Network Error', 'Network error. Please try again.');
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        // Custom Alert Functions
+        function showCustomAlert(type, title, message) {
+            const overlay = document.getElementById('customAlertOverlay');
+            const icon = document.getElementById('customAlertIcon');
+            const titleEl = document.getElementById('customAlertTitle');
+            const messageEl = document.getElementById('customAlertMessage');
+
+            // Set icon based on type
+            icon.className = 'custom-alert-icon';
+            if (type === 'success') {
+                icon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                icon.classList.add('success');
+            } else if (type === 'error') {
+                icon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                icon.classList.add('error');
+            } else if (type === 'warning') {
+                icon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                icon.classList.add('warning');
+            } else if (type === 'info') {
+                icon.innerHTML = '<i class="fas fa-info-circle"></i>';
+                icon.classList.add('info');
+            }
+
+            titleEl.textContent = title;
+            messageEl.textContent = message;
+            overlay.classList.add('show');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('customAlertOverlay').classList.remove('show');
+        }
+    </script>
+</body>
+</html>

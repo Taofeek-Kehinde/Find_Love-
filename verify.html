@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Reset Code - Find Love</title>
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff4b8b;
+            --secondary: #ff87ab;
+            --dark: #3a0c3f;
+            --light: #fff9fb;
+            --accent: #a83279;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --gray: #f0f0f0;
+            --text: #333333;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff9fb 0%, #ffeef4 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .verify-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verify-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .verify-header h1 {
+            font-size: 2rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .verify-header p {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .code-input-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 30px 0;
+        }
+
+        .code-input {
+            width: 60px;
+            height: 60px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark);
+            transition: all 0.3s;
+        }
+
+        .code-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 75, 139, 0.1);
+        }
+
+        .code-input.filled {
+            border-color: var(--success);
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 75, 139, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .resend-link {
+            margin-top: 20px;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .resend-link:hover {
+            color: var(--accent);
+        }
+
+        .back-link {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .back-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-link a:hover {
+            color: var(--accent);
+        }
+
+        /* Custom Alert Modal */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .custom-alert-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-alert {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: scale(0.7);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-alert-overlay.show .custom-alert {
+            transform: scale(1);
+        }
+
+        .custom-alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .custom-alert-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 0.6s ease;
+        }
+
+        .custom-alert-icon.success { color: #28a745; }
+        .custom-alert-icon.error { color: #dc3545; }
+        .custom-alert-icon.warning { color: #ffc107; }
+        .custom-alert-icon.info { color: #17a2b8; }
+
+        .custom-alert-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .custom-alert-message {
+            font-size: 1rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .custom-alert-button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+        }
+
+        .custom-alert-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.3);
+        }
+
+        /* Animations */
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .verify-container {
+                padding: 30px 25px;
+                margin: 10px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .verify-header h1 {
+                font-size: 1.7rem;
+            }
+            
+            .code-input {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .verify-container {
+                padding: 25px 20px;
+            }
+            
+            .code-input {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+            
+            .code-input-container {
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="verify-container">
+        <div class="logo">
+            <i class="fas fa-heart"></i>
+            Find Love
+        </div>
+        
+        <div class="verify-header">
+            <h1>Enter Verification Code</h1>
+            <p>We've sent a 6-digit code to your email. Please enter it below to verify your identity.</p>
+        </div>
+        
+        <form id="verifyForm">
+            <div class="code-input-container">
+                <input type="text" class="code-input" maxlength="1" id="code1">
+                <input type="text" class="code-input" maxlength="1" id="code2">
+                <input type="text" class="code-input" maxlength="1" id="code3">
+                <input type="text" class="code-input" maxlength="1" id="code4">
+                <input type="text" class="code-input" maxlength="1" id="code5">
+                <input type="text" class="code-input" maxlength="1" id="code6">
+            </div>
+            
+            <button type="submit" class="submit-btn" id="verifyBtn">
+                <i class="fas fa-check-circle"></i> Verify Code
+            </button>
+        </form>
+        
+        <div class="resend-link" onclick="resendCode()">
+            <i class="fas fa-redo"></i> Resend Code
+        </div>
+        
+        <div class="back-link">
+            <a href="reset.html"><i class="fas fa-arrow-left"></i> Back to Reset</a>
+        </div>
+    </div>
+
+    <script>
+        // Auto-focus and navigation between inputs
+        const codeInputs = document.querySelectorAll('.code-input');
+        
+        codeInputs.forEach((input, index) => {
+            input.addEventListener('input', function(e) {
+                // Only allow numbers
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Add filled class
+                if (this.value) {
+                    this.classList.add('filled');
+                    // Move to next input
+                    if (index < codeInputs.length - 1) {
+                        codeInputs[index + 1].focus();
+                    }
+                } else {
+                    this.classList.remove('filled');
+                }
+                
+                // Check if all inputs are filled
+                checkAllInputsFilled();
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                // Handle backspace
+                if (e.key === 'Backspace' && !this.value && index > 0) {
+                    codeInputs[index - 1].focus();
+                }
+            });
+            
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const paste = e.clipboardData.getData('text');
+                const numbers = paste.replace(/[^0-9]/g, '').slice(0, 6);
+                
+                for (let i = 0; i < numbers.length && (index + i) < codeInputs.length; i++) {
+                    codeInputs[index + i].value = numbers[i];
+                    codeInputs[index + i].classList.add('filled');
+                }
+                
+                checkAllInputsFilled();
+            });
+        });
+        
+        // Focus first input on load
+        codeInputs[0].focus();
+
+        // Auto-fill code if available from localStorage
+        const storedCode = localStorage.getItem('resetCode');
+        if (storedCode && storedCode.length === 6) {
+            for (let i = 0; i < 6; i++) {
+                codeInputs[i].value = storedCode[i];
+                codeInputs[i].classList.add('filled');
+            }
+            checkAllInputsFilled();
+
+            // Show message about auto-filled code
+            setTimeout(() => {
+                showCustomAlert(
+                    'Code Auto-Filled!',
+                    'Your reset code has been automatically filled. You can verify it now or edit if needed.',
+                    'info'
+                );
+            }, 500);
+        }
+        
+        function checkAllInputsFilled() {
+            const allFilled = Array.from(codeInputs).every(input => input.value);
+            document.getElementById('verifyBtn').disabled = !allFilled;
+        }
+        
+        function getCode() {
+            return Array.from(codeInputs).map(input => input.value).join('');
+        }
+        
+        function clearCode() {
+            codeInputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('filled');
+            });
+            codeInputs[0].focus();
+            checkAllInputsFilled();
+        }
+
+        // Custom Alert System
+        function showCustomAlert(title, message, type = 'info', callback = null) {
+            const existingAlert = document.querySelector('.custom-alert-overlay');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-alert-overlay';
+
+            let icon = '';
+            switch(type) {
+                case 'success':
+                    icon = '<i class="fas fa-check-circle"></i>';
+                    break;
+                case 'error':
+                    icon = '<i class="fas fa-times-circle"></i>';
+                    break;
+                case 'warning':
+                    icon = '<i class="fas fa-exclamation-triangle"></i>';
+                    break;
+                case 'info':
+                default:
+                    icon = '<i class="fas fa-info-circle"></i>';
+                    break;
+            }
+
+            overlay.innerHTML = `
+                <div class="custom-alert">
+                    <div class="custom-alert-icon ${type}">
+                        ${icon}
+                    </div>
+                    <div class="custom-alert-title">${title}</div>
+                    <div class="custom-alert-message">${message}</div>
+                    <button class="custom-alert-button" onclick="closeCustomAlert()">
+                        ${type === 'error' ? 'Try Again' : 'OK'}
+                    </button>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            setTimeout(() => {
+                overlay.classList.add('show');
+            }, 10);
+
+            if (callback) {
+                overlay.setAttribute('data-callback', callback.toString());
+            }
+        }
+
+        function closeCustomAlert() {
+            const overlay = document.querySelector('.custom-alert-overlay');
+            if (overlay) {
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.remove();
+                }, 300);
+            }
+        }
+
+        // Form submission
+        document.getElementById('verifyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const code = getCode();
+            const verifyBtn = document.getElementById('verifyBtn');
+            
+            if (code.length !== 6) {
+                showCustomAlert(
+                    'Incomplete Code', 
+                    'Please enter all 6 digits of the verification code.', 
+                    'warning'
+                );
+                return;
+            }
+
+            // Show loading
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+
+            try {
+                const response = await fetch('http://localhost:3001/api/verify-code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ code })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showCustomAlert(
+                        'Code Verified!', 
+                        'Your code has been verified successfully. You will now be redirected to set your new password.', 
+                        'success'
+                    );
+                    
+                    // Store the code for the next step and redirect
+                    localStorage.setItem('resetCode', code);
+                    setTimeout(() => {
+                        window.location.href = 'confirm.html';
+                    }, 2000);
+                } else {
+                    showCustomAlert(
+                        'Invalid Code', 
+                        result.message || 'The code you entered is invalid or has expired. Please try again.', 
+                        'error'
+                    );
+                    clearCode();
+                }
+            } catch (error) {
+                console.error('Verify error:', error);
+                showCustomAlert(
+                    'Connection Error', 
+                    'Unable to connect to the server. Please check your connection and try again.', 
+                    'error'
+                );
+            } finally {
+                // Hide loading
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Verify Code';
+                checkAllInputsFilled();
+            }
+        });
+
+        // Resend code function
+        async function resendCode() {
+            showCustomAlert(
+                'Resend Code', 
+                'Please go back to the reset page to request a new code.', 
+                'info'
+            );
+        }
+    </script>
+</body>
+</html>

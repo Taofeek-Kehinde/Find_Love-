@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test MongoDB Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #ff4b8b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #e63d7a;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+        }
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 FindLove Database Test</h1>
+        <p>Use this page to test your MongoDB connection and API endpoints.</p>
+        
+        <h3>Step 1: Test API Connection</h3>
+        <button onclick="testAPI()">Test API Server</button>
+        
+        <h3>Step 2: Test Database</h3>
+        <button onclick="testSignup()">Test Signup</button>
+        <button onclick="testLogin()">Test Login</button>
+        <button onclick="viewUsers()">View All Users</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+        
+        function showResult(message, isError = false) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<div class="result ${isError ? 'error' : 'success'}">${message}</div>`;
+        }
+        
+        async function testAPI() {
+            try {
+                const response = await fetch(`${API_URL}/`);
+                const data = await response.json();
+                showResult(`✅ API Server is running!<br>Message: ${data.message}<br>Database: ${data.database}`);
+            } catch (error) {
+                showResult(`❌ API Server not running!<br>Error: ${error.message}<br><br>Make sure to run: <code>node server.js</code>`, true);
+            }
+        }
+        
+        async function testSignup() {
+            const testUser = {
+                fullName: 'Test User',
+                email: 'test@example.com',
+                password: 'password123',
+                dateOfBirth: '1990-01-01',
+                gender: 'male',
+                interests: 'testing, coding'
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/api/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(testUser)
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    showResult(`✅ Signup successful!<br>User: ${data.user.fullName}<br>Email: ${data.user.email}`);
+                } else {
+                    showResult(`⚠️ Signup failed: ${data.message}`, true);
+                }
+            } catch (error) {
+                showResult(`❌ Signup error: ${error.message}`, true);
+            }
+        }
+        
+        async function testLogin() {
+            const loginData = {
+                email: 'test@example.com',
+                password: 'password123'
+            };
+            
+            try {
+                const response = await fetch(`${API_URL}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginData)
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    showResult(`✅ Login successful!<br>Welcome: ${data.user.fullName}<br>Email: ${data.user.email}`);
+                } else {
+                    showResult(`⚠️ Login failed: ${data.message}`, true);
+                }
+            } catch (error) {
+                showResult(`❌ Login error: ${error.message}`, true);
+            }
+        }
+        
+        async function viewUsers() {
+            try {
+                const response = await fetch(`${API_URL}/api/users`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    const userList = data.users.map(user =>
+                        `<li><strong>${user.fullName}</strong> (${user.email}) - ${user.gender} - Password: ${user.password}</li>`
+                    ).join('');
+                    showResult(`✅ Found ${data.users.length} users in database:<br><ul>${userList}</ul>`);
+                } else {
+                    showResult(`⚠️ Failed to fetch users: ${data.message}`, true);
+                }
+            } catch (error) {
+                showResult(`❌ Error fetching users: ${error.message}`, true);
+            }
+        }
+    </script>
+</body>
+</html>

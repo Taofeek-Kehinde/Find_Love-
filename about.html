@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Find Love Dating Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="shortcut icon" href="Icon.png" type="image/x-icon">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #ff4b8b;
+            --secondary: #ff87ab;
+            --dark: #3a0c3f;
+            --light: #fff9fb;
+            --accent: #a83279;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --gray: #f0f0f0;
+            --text: #333333;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff9fb 0%, #ffeef4 100%);
+            color: var(--text);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .logo i {
+            margin-right: 8px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        .logo:hover i {
+            animation: rotate 0.5s ease-in-out;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--primary);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        nav ul li a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .find-love-btn, .find-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 75, 139, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite;
+        }
+
+        .find-love-btn:hover, .find-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 75, 139, 0.5);
+            animation: bounce 0.6s ease;
+        }
+
+        .find-love-btn:active, .find-btn:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+
+        .find-love-btn::before, .find-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .find-love-btn:hover::before, .find-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .mobile-nav.active {
+            display: block;
+        }
+
+        .mobile-nav-content {
+            position: absolute;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            padding: 80px 30px 30px;
+        }
+
+        .mobile-nav.active .mobile-nav-content {
+            right: 0;
+        }
+
+        .mobile-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-nav ul li {
+            margin: 20px 0;
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 15px;
+        }
+
+        .mobile-nav ul li:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav ul li a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 18px;
+            display: block;
+            padding: 10px 0;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .mobile-nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-nav ul li a.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .mobile-nav ul li a.active::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .mobile-nav ul li a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+
+        .mobile-nav .find-love-btn .find-btn {
+            width: 100%;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        /* Hero Section */
+        .about-hero {
+            padding: 180px 8% 100px;
+            text-align: center;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+             url('Images/abt_bg.png') center/cover no-repeat;
+            position: relative;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 75, 139, 0.1) 0%, rgba(168, 50, 121, 0.1) 100%);
+        }
+
+        .about-hero-content {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: zoomIn 1s ease;
+        }
+
+        .about-hero h1 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .about-hero h1 span {
+            color: var(--primary);
+            animation: pulse 2s infinite 1s;
+        }
+
+        .about-hero p {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            animation: fadeInUp 1.4s ease;
+        }
+
+        /* Our Story Section */
+        .our-story {
+            padding: 100px 8%;
+            background-color: white;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .section-title p {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 600px;
+            margin: 20px auto 0;
+            font-size: 1.1rem;
+        }
+
+        .story-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .story-text {
+            flex: 1;
+            min-width: 300px;
+            animation: slideInLeft 1s ease;
+        }
+
+        .story-text h3 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .story-text p {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            font-weight: 500;
+            margin-bottom: 20px;
+            animation: fadeInUp 1.4s ease;
+        }
+
+        .story-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            animation: slideInRight 1s ease, float 6s ease-in-out infinite 2s;
+            transition: all 0.3s ease;
+        }
+
+        .story-image:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .story-image:hover img {
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        /* Mission Section */
+        .mission {
+            padding: 100px 8%;
+            background: var(--light);
+        }
+
+        .mission-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 50px;
+        }
+
+        .mission-card {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .mission-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mission-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .mission-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .mission-card:hover .mission-icon {
+            transform: rotateY(360deg) scale(1.1);
+            box-shadow: 0 10px 20px rgba(255, 75, 139, 0.3);
+        }
+
+        .mission-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .mission-card p {
+            text-align: left;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+        }
+
+        /* Team Section */
+        .team {
+            padding: 100px 8%;
+            background: white;
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 50px;
+        }
+
+        .team-member {
+            width: 320px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .team-member.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .team-member:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-image {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .member-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 75, 139, 0.1) 50%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1;
+        }
+
+        .team-member:hover .member-image::before {
+            opacity: 1;
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.15) rotate(3deg);
+        }
+
+        .member-info {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .member-info h3 {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 5px;
+        }
+
+        .member-info p {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .member-social {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .member-social a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .member-social a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px) scale(1.1) rotate(360deg);
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.4);
+        }
+
+        /* Values Section */
+        .values {
+            padding: 100px 8%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        /* Responsive grid for values */
+        @media (max-width: 1200px) {
+            .values-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .value-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .value-card.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .value-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover .value-icon {
+            transform: scale(1.2) rotateY(360deg);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .value-card h3 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 15px;
+        }
+
+        .value-card p {
+            color: #2c3e50;
+            text-align: left;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        /* Join Section */
+        .join {
+            padding: 100px 8%;
+            text-align: center;
+            background: white;
+        }
+
+        .join-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .join-content h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 20px;
+        }
+
+        .join-content p {
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: #bbb;
+            padding: 60px 8% 30px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 30px;
+            padding-right: 20px;
+        }
+
+        .footer-column h3 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ff4b8b;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            color: #bbb;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-column p {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #bbb;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            transition: all 0.3s;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-3px) scale(1.1) rotate(360deg);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 75, 139, 0.4);
+            }
+
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 10px rgba(255, 75, 139, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(255, 75, 139, 0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .about-hero {
+                padding-top: 150px;
+                padding-bottom: 80px;
+            }
+
+            .about-hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .story-content {
+                flex-direction: column;
+            }
+
+            .story-image {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 5%;
+            }
+
+            /* Show hamburger menu on mobile */
+            .hamburger {
+                display: flex;
+            }
+
+            /* Hide desktop navigation on mobile */
+            nav ul {
+                display: none;
+            }
+
+            .find-love-btn {
+                display: none;
+            }
+
+            .about-hero h1 {
+                font-size: 2.3rem;
+            }
+
+            .about-hero p {
+                text-align: left;
+            }
+
+            .join-content p {
+                text-align: left;
+            }
+
+            .section-title h2 {
+                font-size: 2rem;
+            }
+
+            .team-members {
+                gap: 30px;
+            }
+
+            .team-member {
+                width: 350px;
+                max-width: 90vw;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-hero {
+                padding: 130px 5% 60px;
+            }
+
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+
+            .mission-card,
+            .value-card {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo"><i class="fas fa-heart"></i> Find Love</a>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+                <li><a href="service.html">Services</a></li>
+                <li><a href="Linked.html">Linked Couple</a></li>
+                <li><a href="Contact.html">Contact Us</a></li>
+            </ul>
+        </nav>
+        <button class="find-love-btn" id="findLoveBtn">Find Love</button>
+
+        <!-- Hamburger Menu (Mobile Only) -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <div class="mobile-nav-content">
+            <ul>
+                <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+                <li><a href="about.html" class="mobile-nav-link active">About Us</a></li>
+                <li><a href="service.html" class="mobile-nav-link">Services</a></li>
+                <li><a href="Linked.html" class="mobile-nav-link">Linked Couple</a></li>
+                <li><a href="Contact.html" class="mobile-nav-link">Contact Us</a></li>
+            </ul>
+            <button class="find-love-btn" id="mobileFindLoveBtn">Find Love</button>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="about-hero-content">
+            <h1>Our <span>Love</span> Story</h1>
+            <p>Find Love was born from a simple idea, everyone deserves to find meaningful connections. Since 2020,
+                we've been helping people around the world find love, friendship, and companionship through our
+                innovative platform.</p>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="our-story">
+        <div class="section-title">
+            <h2>How It All Began</h2>
+            <p>The journey of Find Love started with a personal experience</p>
+        </div>
+
+        <div class="story-content">
+            <div class="story-text">
+                <h3>From Personal Experience to Global Mission</h3>
+                <p>Our founder, Taofeek Kehinde, created Find Love after her own frustrating <span
+                        style="color: #ff4b8b;">experiences with dating apps</span>. he realized that most platforms
+                    focused on superficial connections rather than meaningful relationships.</p>
+                <p>In 2020, Kehinde gathered a team of relationship experts, psychologists, and tech enthusiasts to
+                    build a dating platform that would prioritize compatibility, safety, and genuine connections.</p>
+                <p>Today, Find Love has grown into a global community with millions of members in over 120 countries.
+                    We've helped create thousands of meaningful relationships and marriages, and we're just getting
+                    started.</p>
+                <p>At Find Love, we understand that love is one of the most powerful and beautiful parts of life — and
+                    everyone deserves to experience it. Our mission is to create a space where hearts can meet,
+                    connections can grow, and relationships can blossom into something meaningful and lasting.
+
+                    We’ve built Find Love to be more than just a dating platform. It’s a community of people from all
+                    walks of <span style="color: #ff4b8b;">life who are ready to open their hearts</span>, share their
+                    stories, and take a chance on something real. Whether you're looking for friendship, companionship,
+                    or the love of your life, Find Love is here to help you find that special person who understands you
+                    and values you for who you are.
+
+                    With an easy-to-use interface, secure messaging, and personalized matches, we’re committed to making
+                    your journey to love as smooth and rewarding as possible. We value honesty, respect, and
+                    authenticity — and we’ve created a safe space where meaningful relationships can thrive.
+
+                    Your story is unique, and your journey to love should be too. At Find Love, every message, every
+                    smile, and every connection is a step closer to something extraordinary. Join us and let <span
+                        style="color: #ff4b8b;">love find you.</span> </p>
+            </div>
+            <div class="story-image">
+                <img src="Images/abt.png" alt="Our Team">
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission">
+        <div class="section-title">
+            <h2>Our Mission & Vision</h2>
+            <p>What drives us to create meaningful connections</p>
+        </div>
+
+        <div class="mission-content">
+            <div class="mission-card">
+                <div class="mission-icon">
+                    <i class="fas fa-heart"></i>
+
+                </div>
+                <h3>Our Mission</h3>
+                <p>To create a safe and inclusive platform where people can form genuine connections based on shared
+                    values, interests, and compatibility. We aim to revolutionize online dating by focusing on quality
+                    over quantity.</p>
+            </div>
+
+            <div class="mission-card">
+                <div class="mission-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3>Our Vision</h3>
+                <p>To become the world's most trusted dating platform where people feel empowered to find meaningful
+                    relationships. We envision a world where technology enhances human connections rather than replacing
+                    them.</p>
+            </div>
+
+            <div class="mission-card">
+                <div class="mission-icon">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h3>Our Promise</h3>
+                <p>We're committed to maintaining a respectful community with robust safety features, inclusive
+                    policies, and continuous innovation to help you find the connection you're looking for.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team">
+        <div class="section-title">
+            <h2>Meet Our Team</h2>
+            <p>The passionate people behind Find Love</p>
+        </div>
+
+        <div class="team-members">
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="Images/md.jpg" alt="Taofeek Kehinde">
+                </div>
+                <div class="member-info">
+                    <h3>Taofeek Kehinde</h3>
+                    <p>Founder & CEO</p>
+                    <div class="member-social">
+                        <a href="https://www.linkedin.com/in/taofeek-kehinde-438553249/"><i
+                                class="fab fa-linkedin-in"></i></a>
+                                <a href="https://x.com/ktaofeek015"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.facebook.com/jelilat.taofeek.56"><i class="fab fa-facebook-f"></i></a>
+                        <a href="mailto:Ktaofeek015@gmail.com"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="Images/dad.jpg" alt="Mr. Abudullateef ">
+                </div>
+                <div class="member-info">
+                    <h3>Mr. Abdullateef </h3>
+                    <p>Social Manager </p>
+                    <div class="member-social">
+                        <a href="https://www.linkedin.com/in/abdulateef-taofeek-5a846895/"><i
+                                class="fab fa-linkedin-in"></i></a>
+                                <a href="https://x.com/ktaofeek015"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.facebook.com/abdulateef.taofeek.2025"><i class="fab fa-facebook-f"></i></a>
+                        <a href="mailto:Ktaofeek015@gmail.com"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="Images/anu.jpg" alt="Anuoluwapo A">
+                </div>
+                <div class="member-info">
+                    <h3>Anuoluwapo A</h3>
+                    <p>Head of Matchmaking</p>
+                    <div class="member-social">
+                        <a href="https://www.linkedin.com/in/taofeek-kehinde-438553249/"><i
+                                class="fab fa-linkedin-in"></i></a>
+                                <a href="https://x.com/ktaofeek015"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.facebook.com/jelilat.taofeek.56"><i class="fab fa-facebook-f"></i></a>
+                        <a href="mailto:Ktaofeek015@gmail.com"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-image">
+                    <img src="Images/dev.jpg" alt="Ademola M">
+                </div>
+                <div class="member-info">
+                    <h3>Ademola M</h3>
+                    <p>Community Manager</p>
+                    <div class="member-social">
+                        <a href="https://www.linkedin.com/in/taofeek-kehinde-438553249/"><i
+                                class="fab fa-linkedin-in"></i></a>
+                                <a href="https://x.com/ktaofeek015"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.facebook.com/jelilat.taofeek.56"><i class="fab fa-facebook-f"></i></a>
+                        <a href="mailto:Ktaofeek015@gmail.com"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values">
+        <div class="section-title">
+            <h2>Our Core Values</h2>
+            <p>The principles that guide everything we do</p>
+        </div>
+
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3>Safety First</h3>
+                <p>We prioritize the safety and security of our members with advanced verification systems and 24/7
+                    moderation.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Inclusivity</h3>
+                <p>We celebrate diversity and welcome people of all backgrounds, orientations, and identities.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Innovation</h3>
+                <p>We continuously improve our platform with cutting-edge technology to enhance your dating experience.
+                </p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h3>Authenticity</h3>
+                <p>We encourage genuine connections by promoting authentic profiles and meaningful interactions.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-heart-circle-check"></i>
+                </div>
+                <h3>Compassion</h3>
+                <p>We approach our work with empathy and understanding for the challenges of modern dating.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h3>Privacy</h3>
+                <p>We respect your privacy and give you full control over your personal information and visibility.</p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h3>Excellence</h3>
+                <p>We strive for excellence in every aspect of our service, from user experience to customer support.
+                </p>
+            </div>
+
+            <div class="value-card">
+                <div class="value-icon">
+                    <i class="fas fa-globe-americas"></i>
+                </div>
+                <h3>Global Community</h3>
+                <p>We connect hearts across borders, creating a worldwide community of love seekers and relationship
+                    builders.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section class="join">
+        <div class="join-content">
+            <h2>Ready To Find Your Perfect Match?</h2>
+            <p>Join our community of millions of singles looking for meaningful connections. Whether you're searching
+                for friendship, companionship, or true love, we're here to help you on your journey.</p>
+            <button class="find-btn">Join Find Love Today</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Find Love</h3>
+                <p>Connecting singles worldwide since 2020. Our mission is to help you find meaningful relationships
+                    through our innovative matching platform.</p>
+                <div class="social-icons">
+                <a href="https://www.facebook.com/jelilat.taofeek.56"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://x.com/ktaofeek015"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="https://www.youtube.com/@taofeekkehinde3143"><i class="fab fa-youtube"></i></a>
+                <a href="https://www.linkedin.com/in/taofeek-kehinde-438553249/"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="Linked.html">Linked Couple</a></li>
+                    <li><a href="contact.html">Blog</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Features</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Advanced Search</a></li>
+                    <li><a href="#">Compatibility Test</a></li>
+                    <li><a href="#">Icebreaker Questions</a></li>
+                    <li><a href="#">Premium Membership</a></li>
+                    <li><a href="#">Safety Tips</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> Ktaofeek015@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +234 8119 825334 </li>
+                    <li><i class="fas fa-map-marker-alt"></i> Aptech Mokola Ibadan</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2023 Find Love. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const mobileNav = document.getElementById('mobileNav');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        });
+
+        // Close mobile nav when clicking outside
+        mobileNav.addEventListener('click', (e) => {
+            if (e.target === mobileNav) {
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            }
+        });
+
+        // Close mobile nav when clicking on a link
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            });
+        });
+
+        // Scroll to top when page loads
+        window.onload = function () {
+            window.scrollTo(0, 0);
+        };
+
+        // Add animation to elements when they come into view
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add staggered animation delay for cards in the same section
+                    const cards = entry.target.parentElement.querySelectorAll('.mission-card, .team-member, .value-card');
+                    const index = Array.from(cards).indexOf(entry.target);
+
+                    setTimeout(() => {
+                        entry.target.classList.add('animated');
+                    }, index * 200); // 200ms delay between each card
+
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.mission-card, .team-member, .value-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add floating animation to story image after page load
+        setTimeout(() => {
+            const storyImage = document.querySelector('.story-image');
+            if (storyImage) {
+                storyImage.style.animation += ', float 6s ease-in-out infinite';
+            }
+        }, 2000);
+
+      document.querySelectorAll('.find-love-btn, .find-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    showAlert("You're being redirected to our signup page!", "success");
+
+
+    setTimeout(() => {
+      window.location.href = 'index.html#authSection';
+    }, 1200);
+
+
+    hamburger.classList.remove('active');
+    mobileNav.classList.remove('active');
+  });
+});
+
+
+
+        
+// Custom alert function
+function showAlert(message, type = "success") {
+  const alertBox = document.createElement("div");
+  alertBox.textContent = message;
+  alertBox.style.position = "fixed";
+  alertBox.style.top = "20px";
+  alertBox.style.right = "20px";
+  alertBox.style.padding = "15px 20px";
+  alertBox.style.fontFamily = "Poppins, sans-serif";
+  alertBox.style.fontSize = "14px";
+  alertBox.style.fontWeight = "500";
+  alertBox.style.color = "#333";
+  alertBox.style.background = "#fff";
+  alertBox.style.borderLeft = "5px solid " + (type === "error" ? "#f44336" : "#ff4b8b");
+  alertBox.style.borderRadius = "8px";
+  alertBox.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+  alertBox.style.zIndex = "9999";
+  alertBox.style.opacity = "0";
+  alertBox.style.transform = "translateX(100%)";
+  alertBox.style.transition = "all 0.4s ease";
+
+  document.body.appendChild(alertBox);
+
+  requestAnimationFrame(() => {
+    alertBox.style.opacity = "1";
+    alertBox.style.transform = "translateX(0)";
+  });
+
+  setTimeout(() => {
+    alertBox.style.opacity = "0";
+    alertBox.style.transform = "translateX(100%)";
+    setTimeout(() => alertBox.remove(), 400);
+  }, 3000);
+}
+
+    </script>
+</body>
+
+</html>

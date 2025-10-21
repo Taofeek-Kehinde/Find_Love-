@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindLove Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #ff4b8b, #ff87ab);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 { color: #ff4b8b; }
+        button {
+            background: #ff4b8b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover { background: #e63d7a; }
+        .success { color: #4caf50; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 FindLove Test Page</h1>
+        <p>If you can see this page, Live Server is working correctly!</p>
+        
+        <h3>✅ Current Status:</h3>
+        <p id="status">Live Server is running properly</p>
+        
+        <h3>🔗 Navigation Test:</h3>
+        <button onclick="location.href='index-local.html'">Go to FindLove App</button>
+        <button onclick="location.href='index.html'">Go to Original Index</button>
+        
+        <h3>📊 Browser Info:</h3>
+        <p><strong>URL:</strong> <span id="currentUrl"></span></p>
+        <p><strong>Time:</strong> <span id="currentTime"></span></p>
+        
+        <div id="testResult"></div>
+    </div>
+
+    <script>
+        // Display current URL and time
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('currentTime').textContent = new Date().toLocaleString();
+        
+        // Test localStorage
+        try {
+            localStorage.setItem('test', 'working');
+            const test = localStorage.getItem('test');
+            if (test === 'working') {
+                document.getElementById('testResult').innerHTML = '<p class="success">✅ localStorage is working - FindLove app will work perfectly!</p>';
+            }
+            localStorage.removeItem('test');
+        } catch (e) {
+            document.getElementById('testResult').innerHTML = '<p style="color: red;">❌ localStorage not working</p>';
+        }
+    </script>
+</body>
+</html>
