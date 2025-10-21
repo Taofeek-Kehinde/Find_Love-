@@ -2262,7 +2262,7 @@ io.on('connection', (socket) => {
     });
 });
 
-const PORT = process.env.PORT || 30001;
+const PORT = process.env.PORT || 3001;
 
 httpServer.listen(PORT, () => {
     console.log(` FindLove API Server running on http://localhost:${PORT}`);
