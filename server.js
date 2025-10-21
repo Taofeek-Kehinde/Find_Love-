@@ -9,7 +9,7 @@ const fs = require('fs');
 
 const app = express();
 const path = require('path');
-const PORT = 3001; // Different port from live server
+
 
 // Middleware
 app.use(cors({
@@ -2261,6 +2261,8 @@ io.on('connection', (socket) => {
         }
     });
 });
+
+const PORT = process.env.PORT || 30001;
 
 httpServer.listen(PORT, () => {
     console.log(` FindLove API Server running on http://localhost:${PORT}`);
