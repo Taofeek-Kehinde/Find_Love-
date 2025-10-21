@@ -6,7 +6,6 @@ const cors = require('cors');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const fs = require('fs');
-
 const app = express();
 const path = require('path');
 
